@@ -45,7 +45,7 @@ Inspired by the [37signals/DHH coding style guide](https://gist.github.com/marck
 - **`@37signals/state_records_agent`** - State as records pattern (not booleans)
 - **`@37signals/auth_agent`** - Custom passwordless authentication (~150 LOC)
 - **`@37signals/migration_agent`** - Simple, pragmatic migrations
-- **`@37signals/test_agent`** - Minitest with fixtures
+- **`@37signals/test_agent`** - RSpec with FactoryBot factories
 - **`@37signals/turbo_agent`** - Hotwire/Turbo patterns
 - **`@37signals/stimulus_agent`** - Focused Stimulus controllers
 - **`@37signals/events_agent`** - Event tracking system
@@ -67,7 +67,7 @@ Inspired by the [37signals/DHH coding style guide](https://gist.github.com/marck
 
 3. @37signals/concerns_agent add Closeable concern to Card model
 
-4. @37signals/test_agent write Minitest tests
+4. @37signals/test_agent write RSpec tests
 
 5. @37signals/implement_agent implement the feature
 
@@ -354,7 +354,7 @@ All agents follow best practices from GitHub's analysis:
 - PostgreSQL or SQLite
 - Hotwire (Turbo + Stimulus)
 - Solid Queue/Cache/Cable
-- Minitest + Fixtures
+- RSpec + FactoryBot
 
 ### Standard Agents Stack
 - Ruby 3.3+

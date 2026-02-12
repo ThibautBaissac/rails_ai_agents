@@ -120,7 +120,7 @@ RSpec.describe User, type: :model do
 
     it "attaches an avatar" do
       user.avatar.attach(
-        io: File.open(Rails.root.join("spec/fixtures/files/avatar.jpg")),
+        io: File.open(Rails.root.join("spec/factories/files/avatar.jpg")),
         filename: "avatar.jpg",
         content_type: "image/jpeg"
       )
@@ -130,7 +130,7 @@ RSpec.describe User, type: :model do
 
     it "generates variants" do
       user.avatar.attach(
-        io: File.open(Rails.root.join("spec/fixtures/files/avatar.jpg")),
+        io: File.open(Rails.root.join("spec/factories/files/avatar.jpg")),
         filename: "avatar.jpg",
         content_type: "image/jpeg"
       )
@@ -152,7 +152,7 @@ FactoryBot.define do
     trait :with_avatar do
       after(:build) do |user|
         user.avatar.attach(
-          io: File.open(Rails.root.join("spec/fixtures/files/avatar.jpg")),
+          io: File.open(Rails.root.join("spec/factories/files/avatar.jpg")),
           filename: "avatar.jpg",
           content_type: "image/jpeg"
         )

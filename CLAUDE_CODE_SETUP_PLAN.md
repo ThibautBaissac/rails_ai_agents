@@ -27,7 +27,7 @@
 | **Ruby** | 3.3.6 |
 | **Rails** | 8.2.0.alpha (main branch) |
 | **Database** | SQLite 3 |
-| **Testing** | Minitest + Capybara + Selenium |
+| **Testing** | RSpec + Capybara + Selenium |
 | **Linting** | RuboCop (omakase preset) |
 | **Frontend** | Hotwire (Turbo + Stimulus) + Tailwind CSS |
 | **Assets** | Propshaft + Import Maps |
@@ -93,7 +93,7 @@ mkdir -p ~/.claude/{hooks,commands,agents,skills}
 
 ### Before Every Commit
 1. Run bin/rubocop to check style
-2. Run bin/rails test to verify tests pass
+2. Run bundle exec rspec to verify tests pass
 3. Run bin/brakeman to check security
 4. Verify no .env or secret files are staged
 
@@ -202,7 +202,7 @@ Modern Rails 8 application using the Solid trifecta (Cache, Queue, Cable) with S
 | Frontend | Hotwire (Turbo + Stimulus) |
 | Styling | Tailwind CSS |
 | Assets | Propshaft + Import Maps |
-| Testing | Minitest + Capybara |
+| Testing | RSpec + Capybara |
 | Linting | RuboCop (omakase) |
 | Deployment | Kamal + Docker |
 | Jobs | Solid Queue |
@@ -235,7 +235,7 @@ test/
 ├── controllers/     # Controller tests
 ├── integration/     # Integration tests
 ├── system/          # Browser tests (Capybara)
-└── fixtures/        # Test data
+└── FactoryBot factories/        # Test data
 ```
 
 ## Development Commands
@@ -250,8 +250,8 @@ bin/rails server       # Rails only
 bin/rails console      # Rails console
 
 # Testing
-bin/rails test         # Run unit/integration tests
-bin/rails test:system  # Run browser tests
+bundle exec rspec         # Run unit/integration tests
+bundle exec rspec:system  # Run browser tests
 bin/ci                 # Full CI suite locally
 
 # Code Quality
@@ -358,12 +358,12 @@ export default class extends Controller {
 
 ### Testing
 - Test behavior, not implementation
-- Use fixtures for test data
+- Use FactoryBot factories for test data
 - System tests for critical user flows
 - Run tests before committing
 
 ```ruby
-# test/models/post_test.rb
+# spec/models/post_spec.rb
 class PostTest < ActiveSupport::TestCase
   test "requires title" do
     post = Post.new(body: "content")
@@ -410,7 +410,7 @@ kamal app console      # Rails console on server
 ```
 
 ### Pre-deployment Checklist
-1. All tests passing: `bin/rails test && bin/rails test:system`
+1. All tests passing: `bundle exec rspec && bundle exec rspec:system`
 2. No security issues: `bin/brakeman`
 3. No vulnerable gems: `bundle audit`
 4. Assets precompile: `bin/rails assets:precompile`
@@ -691,7 +691,7 @@ chmod +x ~/.claude/hooks/rails-after-edit.sh
 ---
 description: Run Rails tests with options
 argument-hint: [test file or pattern]
-allowed-tools: Bash(bin/rails test:*), Bash(bin/rails test)
+allowed-tools: Bash(bundle exec rspec:*), Bash(bundle exec rspec)
 ---
 
 ## Context
@@ -705,10 +705,10 @@ Run Rails tests. If arguments provided, run specific tests:
 If no arguments, run the full test suite.
 
 Use:
-- `bin/rails test` for unit/integration tests
-- `bin/rails test:system` for browser tests
-- `bin/rails test path/to/test.rb` for specific file
-- `bin/rails test path/to/test.rb:42` for specific line
+- `bundle exec rspec` for unit/integration tests
+- `bundle exec rspec:system` for browser tests
+- `bundle exec rspec path/to/test.rb` for specific file
+- `bundle exec rspec path/to/test.rb:42` for specific line
 ```
 
 ### 4.2 Rails Lint Command
@@ -817,7 +817,7 @@ This runs:
 3. Bundler-audit (gem security)
 4. Import map audit (JS security)
 5. Brakeman (Rails security)
-6. Tests (bin/rails test)
+6. Tests (bundle exec rspec)
 7. Seed validation
 
 Report any failures with details.
@@ -897,8 +897,8 @@ end
 ## Test Pattern
 
 ```ruby
-# test/models/model_name_test.rb
-require "test_helper"
+# spec/models/model_name_spec.rb
+require "rails_helper"
 
 class ModelNameTest < ActiveSupport::TestCase
   # Validations
@@ -1046,8 +1046,8 @@ end
 ## Controller Test Pattern
 
 ```ruby
-# test/controllers/posts_controller_test.rb
-require "test_helper"
+# spec/requests/posts_controller_spec.rb
+require "rails_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -1272,12 +1272,12 @@ Provide specific file:line references and concrete fix suggestions.
 ```markdown
 ---
 name: rails-test-writer
-description: Writes comprehensive Rails tests (Minitest)
+description: Writes comprehensive Rails tests (RSpec)
 tools: Read, Write, Edit, Glob, Grep
 model: sonnet
 ---
 
-You are a test-driven development expert for Rails using Minitest.
+You are a test-driven development expert for Rails using RSpec.
 
 ## Test Types
 
@@ -1303,7 +1303,7 @@ You are a test-driven development expert for Rails using Minitest.
 
 ## Test Structure
 ```ruby
-require "test_helper"
+require "rails_helper"
 
 class ModelTest < ActiveSupport::TestCase
   setup do
@@ -1321,7 +1321,7 @@ end
 
 ## Best Practices
 - Test behavior, not implementation
-- Use fixtures for test data
+- Use FactoryBot factories for test data
 - One assertion concept per test
 - Descriptive test names
 - Setup common objects in setup block
