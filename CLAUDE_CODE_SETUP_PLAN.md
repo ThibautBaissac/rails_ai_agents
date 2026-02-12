@@ -65,7 +65,7 @@ mkdir -p ~/.claude/{hooks,commands,agents,skills}
 
 **File:** `~/.claude/CLAUDE.md`
 
-~~~markdown
+```markdown
 # Global Claude Code Configuration
 
 ## Identity
@@ -118,7 +118,7 @@ mkdir -p ~/.claude/{hooks,commands,agents,skills}
 - Max 50 lines per model method
 - Extract service objects for complex business logic
 - Use concerns for shared model/controller behavior
-~~~
+```
 
 ### 1.3 Create Global settings.json
 
@@ -186,7 +186,7 @@ mkdir -p ~/.claude/{hooks,commands,agents,skills}
 
 **File:** `./CLAUDE.md`
 
-~~~markdown
+```markdown
 # rails-claude Project Guide
 
 ## Overview
@@ -430,13 +430,13 @@ kamal app console      # Rails console on server
 - Skip tests
 - Add unnecessary gems
 - Over-engineer solutions
-~~~
+```
 
 ### 2.2 Create Project Local CLAUDE.md (Optional)
 
 **File:** `./CLAUDE.local.md` (gitignored)
 
-~~~markdown
+```markdown
 # Local Development Overrides
 
 ## Personal Preferences
@@ -446,7 +446,7 @@ kamal app console      # Rails console on server
 ## Local Environment
 - Database: storage/development.sqlite3
 - Server: http://localhost:3000
-~~~
+```
 
 ### 2.3 Update .gitignore
 
@@ -687,7 +687,7 @@ chmod +x ~/.claude/hooks/rails-after-edit.sh
 
 **File:** `~/.claude/commands/rails-test.md`
 
-~~~markdown
+```markdown
 ---
 description: Run Rails tests with options
 argument-hint: [test file or pattern]
@@ -709,7 +709,7 @@ Use:
 - `bin/rails test:system` for browser tests
 - `bin/rails test path/to/test.rb` for specific file
 - `bin/rails test path/to/test.rb:42` for specific line
-~~~
+```
 
 ### 4.2 Rails Lint Command
 
@@ -736,7 +736,7 @@ Arguments: $ARGUMENTS
 
 **File:** `~/.claude/commands/security.md`
 
-~~~markdown
+```markdown
 ---
 description: Run security scans (Brakeman + bundle audit)
 allowed-tools: Bash(bin/brakeman:*), Bash(bundle audit:*)
@@ -764,7 +764,7 @@ Run full security audit:
    ```
 
 Report findings with severity levels and remediation steps.
-~~~
+```
 
 ### 4.4 Rails Generate Command
 
@@ -831,7 +831,7 @@ Report any failures with details.
 
 **File:** `.claude/skills/rails-model/SKILL.md`
 
-~~~markdown
+```markdown
 ---
 name: Rails Model
 description: Create well-structured Rails models with validations, associations, and tests
@@ -941,13 +941,13 @@ end
 - [ ] Scopes for common queries
 - [ ] Tests for validations and methods
 - [ ] Fixtures for test data
-~~~
+```
 
 ### 5.2 Rails Controller Skill
 
 **File:** `.claude/skills/rails-controller/SKILL.md`
 
-~~~markdown
+```markdown
 ---
 name: Rails Controller
 description: Create RESTful Rails controllers with Turbo support
@@ -1076,13 +1076,13 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   end
 end
 ```
-~~~
+```
 
 ### 5.3 Stimulus Controller Skill
 
 **File:** `.claude/skills/stimulus/SKILL.md`
 
-~~~markdown
+```markdown
 ---
 name: Stimulus Controller
 description: Create Stimulus controllers for JavaScript interactivity
@@ -1212,7 +1212,7 @@ hide() {
 ```bash
 bin/rails generate stimulus controller_name
 ```
-~~~
+```
 
 ---
 
@@ -1222,7 +1222,7 @@ bin/rails generate stimulus controller_name
 
 **File:** `~/.claude/agents/rails-reviewer.md`
 
-~~~markdown
+```markdown
 ---
 name: rails-reviewer
 description: Reviews Rails code for security, performance, and Rails conventions
@@ -1263,13 +1263,13 @@ You are a senior Rails developer reviewing code. Focus on:
 - DRY without over-abstraction
 
 Provide specific file:line references and concrete fix suggestions.
-~~~
+```
 
 ### 6.2 Rails Test Writer Agent
 
 **File:** `~/.claude/agents/rails-test-writer.md`
 
-~~~markdown
+```markdown
 ---
 name: rails-test-writer
 description: Writes comprehensive Rails tests (Minitest)
@@ -1326,13 +1326,13 @@ end
 - Descriptive test names
 - Setup common objects in setup block
 - Use assert_difference for counts
-~~~
+```
 
 ### 6.3 Rails Migration Agent
 
 **File:** `~/.claude/agents/rails-migration.md`
 
-~~~markdown
+```markdown
 ---
 name: rails-migration
 description: Creates safe, reversible Rails database migrations
@@ -1388,7 +1388,7 @@ bin/rails generate migration AddStatusToPosts status:integer:index
 2. Run `bin/rails db:migrate`
 3. Check `db/schema.rb` for expected changes
 4. Run tests to verify no regressions
-~~~
+```
 
 ---
 

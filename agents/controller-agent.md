@@ -114,7 +114,9 @@ class EntitiesController < ApplicationController
     end
   end
 end
-```### RESTful Actions
+```
+
+### RESTful Actions
 
 Follow Rails REST conventions:
 

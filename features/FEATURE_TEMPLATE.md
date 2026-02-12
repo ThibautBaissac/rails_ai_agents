@@ -2,30 +2,30 @@
 
 # Feature Specification Template
 
-> Utilisez ce template pour documenter une nouvelle feature AVANT de la développer.
-> Ce document guidera l'agent IA (ou les développeurs) dans l'implémentation.
+> Use this template to document a new feature BEFORE developing it.
+> This document will guide the AI agent (or developers) in implementation.
 
-## Workflow des agents
+## Agent Workflow
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    📋 SPECIFICATION PHASE                        │
 ├─────────────────────────────────────────────────────────────────┤
-│ 1. @feature_specification_agent → génère ce document            │
+│ 1. @feature_specification_agent → generates this document       │
 │                         ↓                                        │
 │ 2. @feature_reviewer_agent → review (score X/10)                │
 │                         ↓                                        │
-│    [Si score < 7 ou issues critiques: réviser]                  │
+│    [If score < 7 or critical issues: revise]                    │
 │                         ↓                                        │
-│ 3. @feature_planner_agent → plan d'implémentation               │
+│ 3. @feature_planner_agent → implementation plan                 │
 ├─────────────────────────────────────────────────────────────────┤
 │                    🔴 RED PHASE (per PR)                         │
 ├─────────────────────────────────────────────────────────────────┤
-│ 4. @tdd_red_agent → tests failing (Gherkin → RSpec)             │
+│ 4. @tdd_red_agent → failing tests (Gherkin → RSpec)             │
 ├─────────────────────────────────────────────────────────────────┤
 │                    🟢 GREEN PHASE (per PR)                       │
 ├─────────────────────────────────────────────────────────────────┤
-│ 5. Agents spécialistes → implémentation minimale                │
+│ 5. Specialist agents → minimal implementation                   │
 │    • @model_agent, @migration_agent (database)                  │
 │    • @service_agent, @form_agent (business logic)               │
 │    • @policy_agent (authorization)                              │
@@ -36,23 +36,23 @@
 ├─────────────────────────────────────────────────────────────────┤
 │                    🔵 REFACTOR PHASE (per PR)                    │
 ├─────────────────────────────────────────────────────────────────┤
-│ 6. @tdd_refactoring_agent → améliore le code (tests verts)      │
+│ 6. @tdd_refactoring_agent → improve code (tests green)          │
 │                         ↓                                        │
-│ 7. @lint_agent → corrige le style (Rubocop)                     │
+│ 7. @lint_agent → fix style (Rubocop)                            │
 ├─────────────────────────────────────────────────────────────────┤
 │                    ✅ REVIEW PHASE (per PR)                      │
 ├─────────────────────────────────────────────────────────────────┤
-│ 8. @review_agent → qualité du code (SOLID, patterns)            │
+│ 8. @review_agent → code quality (SOLID, patterns)               │
 │                         ↓                                        │
-│ 9. @security_agent → audit sécurité (Brakeman, vulnérabilités)  │
+│ 9. @security_agent → security audit (Brakeman, vulnerabilities) │
 │                         ↓                                        │
-│    [Si issues: retour à l'étape 5 ou 6]                         │
+│    [If issues: back to step 5 or 6]                             │
 ├─────────────────────────────────────────────────────────────────┤
 │                    🚀 MERGE & DEPLOY                             │
 ├─────────────────────────────────────────────────────────────────┤
-│ 10. Merge PR → branche d'intégration                            │
+│ 10. Merge PR → integration branch                               │
 │                         ↓                                        │
-│     [Répéter 4-10 pour chaque PR step]                          │
+│     [Repeat 4-10 for each PR step]                              │
 │                         ↓                                        │
 │ 11. Merge feature branch → main                                 │
 │                         ↓                                        │
@@ -60,407 +60,407 @@
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Résumé par phase
+### Summary by Phase
 
-| Phase | Agent(s) | Objectif | Validation |
+| Phase | Agent(s) | Objective | Validation |
 |-------|----------|----------|------------|
-| **Spec** | @feature_specification_agent | Créer la spec | - |
-| **Review Spec** | @feature_reviewer_agent | Valider la spec | Score ≥ 7/10 |
-| **Plan** | @feature_planner_agent | Planifier l'implémentation | - |
-| **RED** | @tdd_red_agent | Écrire tests failing | Tests rouges |
-| **GREEN** | Agents spécialistes | Code minimal | Tests verts |
-| **REFACTOR** | @tdd_refactoring_agent | Améliorer le code | Tests verts |
+| **Spec** | @feature_specification_agent | Create spec | - |
+| **Review Spec** | @feature_reviewer_agent | Validate spec | Score ≥ 7/10 |
+| **Plan** | @feature_planner_agent | Plan implementation | - |
+| **RED** | @tdd_red_agent | Write failing tests | Tests red |
+| **GREEN** | Specialist agents | Minimal code | Tests green |
+| **REFACTOR** | @tdd_refactoring_agent | Improve code | Tests green |
 | **LINT** | @lint_agent | Style & formatting | Rubocop clean |
-| **REVIEW** | @review_agent | Qualité code | Pas d'issues HIGH/CRITICAL |
-| **SECURITY** | @security_agent | Audit sécurité | Brakeman clean |
-| **MERGE** | Developer | Intégrer le code | CI vert |
+| **REVIEW** | @review_agent | Code quality | No HIGH/CRITICAL issues |
+| **SECURITY** | @security_agent | Security audit | Brakeman clean |
+| **MERGE** | Developer | Integrate code | CI green |
 
 ---
 
-## 📋 Informations générales
+## 📋 General Information
 
-**Nom de la feature :** `[Nom court et descriptif]`
+**Feature name:** `[Short and descriptive name]`
 
-**Ticket/Issue :** `#[numéro]`
+**Ticket/Issue:** `#[number]`
 
-**Priorité :** `[Haute / Moyenne / Basse]`
+**Priority:** `[High / Medium / Low]`
 
-**Estimation :** `[Petite / Moyenne / Grande]` ou `[X jours]`
-
----
-
-## 🎯 Objectif
-
-**Problème à résoudre :**
-> Décrivez en 2-3 phrases le problème métier ou utilisateur que cette feature résout.
-> Exemple : "Les utilisateurs ne peuvent pas filtrer les restaurants par type de cuisine, ce qui rend la recherche difficile quand ils ont une envie spécifique."
-
-**Valeur apportée :**
-> Quel bénéfice concret pour l'utilisateur ou le business ?
-> Exemple : "Amélioration de l'expérience utilisateur et augmentation du taux de conversion de 15%."
-
-**Critères de succès :**
-- [ ] Critère mesurable 1
-- [ ] Critère mesurable 2
-- [ ] Critère mesurable 3
+**Estimate:** `[Small / Medium / Large]` or `[X days]`
 
 ---
 
-## 👤 Personas concernés
+## 🎯 Objective
 
-Cochez les personas impactés :
-- [ ] Visiteur (non authentifié)
-- [ ] Utilisateur Connecté
-- [ ] Propriétaire de Ressource (Entity Owner)
-- [ ] Administrateur
+**Problem to solve:**
+> Describe in 2-3 sentences the business or user problem this feature solves.
+> Example: "Users cannot filter restaurants by cuisine type, making it difficult to search when they have a specific craving."
 
-> 📋 **Pour chaque persona coché**, documenter les permissions dans la section Policies ci-dessous.
+**Value delivered:**
+> What concrete benefit for the user or business?
+> Example: "Improved user experience and 15% increase in conversion rate."
 
-### Matrice d'autorisation
+**Success criteria:**
+- [ ] Measurable criterion 1
+- [ ] Measurable criterion 2
+- [ ] Measurable criterion 3
 
-| Action | Visiteur | Utilisateur | Propriétaire | Admin |
+---
+
+## 👤 Affected Personas
+
+Check impacted personas:
+- [ ] Visitor (not authenticated)
+- [ ] Logged-in User
+- [ ] Resource Owner (Entity Owner)
+- [ ] Administrator
+
+> 📋 **For each checked persona**, document permissions in the Policies section below.
+
+### Authorization Matrix
+
+| Action | Visitor | User | Owner | Admin |
 |--------|----------|-------------|--------------|-------|
-| Voir | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ |
-| Créer | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ |
-| Modifier | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ |
-| Supprimer | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ |
+| View | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ |
+| Create | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ |
+| Update | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ |
+| Delete | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ |
 
 ---
 
 ## 📝 User Stories
 
-### Story principale
+### Main Story
 ```
-En tant que [persona],
-Je veux [action],
-Afin de [bénéfice].
+As a [persona],
+I want [action],
+So that [benefit].
 ```
 
-**Critères d'acceptation :**
-- [ ] Critère 1 (mesurable, vérifiable par oui/non)
-- [ ] Critère 2 (mesurable, vérifiable par oui/non)
-- [ ] Critère 3 (mesurable, vérifiable par oui/non)
+**Acceptance criteria:**
+- [ ] Criterion 1 (measurable, verifiable by yes/no)
+- [ ] Criterion 2 (measurable, verifiable by yes/no)
+- [ ] Criterion 3 (measurable, verifiable by yes/no)
 
-> ⚠️ **Note:** Les critères doivent être testables et éviter les termes subjectifs comme "bon", "rapide", "intuitif".
+> ⚠️ **Note:** Criteria must be testable and avoid subjective terms like "good", "fast", "intuitive".
 
-### Scénarios Gherkin (Acceptance Criteria)
+### Gherkin Scenarios (Acceptance Criteria)
 
-> 📋 Ces scénarios serviront de base pour les tests d'acceptance avec `@tdd_red_agent`.
+> 📋 These scenarios will serve as the basis for acceptance tests with `@tdd_red_agent`.
 
 ```gherkin
-Feature: [Nom de la feature]
+Feature: [Feature name]
 
   Background:
-    Given [contexte commun]
+    Given [common context]
 
   # Happy Path
-  Scenario: [Scénario principal de succès]
-    Given [précondition]
-    When [action utilisateur]
-    Then [résultat attendu]
-    And [vérification supplémentaire]
+  Scenario: [Main success scenario]
+    Given [precondition]
+    When [user action]
+    Then [expected result]
+    And [additional verification]
 
   # Validation
-  Scenario: [Validation des données]
-    Given [précondition]
-    When [action avec données invalides]
-    Then [message d'erreur affiché]
-    And [données préservées dans le formulaire]
+  Scenario: [Data validation]
+    Given [precondition]
+    When [action with invalid data]
+    Then [error message displayed]
+    And [data preserved in form]
 
   # Authorization
-  Scenario: [Contrôle d'accès]
-    Given [utilisateur non autorisé]
-    When [tentative d'action protégée]
-    Then [redirection ou message d'erreur]
+  Scenario: [Access control]
+    Given [unauthorized user]
+    When [attempt protected action]
+    Then [redirect or error message]
 ```
 
-### Stories secondaires (optionnel)
-> Si la feature est complexe, listez les autres stories avec leurs propres scénarios Gherkin.
+### Secondary Stories (optional)
+> If the feature is complex, list other stories with their own Gherkin scenarios.
 
 ---
 
-## ⚠️ Edge Cases & Gestion des erreurs
+## ⚠️ Edge Cases & Error Handling
 
-> 🔴 **OBLIGATOIRE:** Documenter au minimum 3 edge cases.
+> 🔴 **REQUIRED:** Document at least 3 edge cases.
 
-### Edge Cases Identifiés
+### Identified Edge Cases
 
-| # | Type | Scénario | Comportement attendu | Message d'erreur |
+| # | Type | Scenario | Expected Behavior | Error Message |
 |---|------|----------|---------------------|------------------|
-| 1 | Input invalide | [Description] | [Comportement] | [Message] |
-| 2 | Accès non autorisé | [Description] | [Comportement] | [Message] |
-| 3 | État vide/null | [Description] | [Comportement] | [Message] |
-| 4 | Erreur réseau/système | [Description] | [Comportement] | [Message] |
-| 5 | Opération concurrente | [Description] | [Comportement] | [Message] |
+| 1 | Invalid input | [Description] | [Behavior] | [Message] |
+| 2 | Unauthorized access | [Description] | [Behavior] | [Message] |
+| 3 | Empty/null state | [Description] | [Behavior] | [Message] |
+| 4 | Network/system error | [Description] | [Behavior] | [Message] |
+| 5 | Concurrent operation | [Description] | [Behavior] | [Message] |
 
-### Scénarios Gherkin pour Edge Cases
+### Gherkin Scenarios for Edge Cases
 
 ```gherkin
   # Edge Case: Invalid Input
   Scenario: User submits invalid data
-    Given [précondition]
-    When [action avec données invalides]
-    Then [comportement attendu]
-    And [message d'erreur spécifique]
+    Given [precondition]
+    When [action with invalid data]
+    Then [expected behavior]
+    And [specific error message]
 
   # Edge Case: Unauthorized Access
   Scenario: Unauthorized user attempts action
-    Given I am logged in as [persona non autorisé]
-    When I attempt to [action protégée]
-    Then I should see "[message d'erreur]"
+    Given I am logged in as [unauthorized persona]
+    When I attempt to [protected action]
+    Then I should see "[error message]"
     And I should be redirected to [destination]
 
   # Edge Case: Empty State
   Scenario: No data available
-    Given [aucune donnée existe]
+    Given [no data exists]
     When I visit [page]
-    Then I should see "[message état vide]"
+    Then I should see "[empty state message]"
     And I should see [call to action]
 ```
 
 ---
 
-## 🔄 Découpage en PRs incrémentales
+## 🔄 Breaking Down into Incremental PRs
 
-> ⚠️ **IMPORTANT** : Ne jamais one-shot une grosse feature en une seule PR.
+> ⚠️ **IMPORTANT**: Never one-shot a large feature in a single PR.
 >
-> Cette section est **obligatoire** pour toute feature estimée à plus d'une journée de dev.
+> This section is **mandatory** for any feature estimated at more than one day of dev.
 
-### Branche d'intégration
+### Integration Branch
 
-**Nom de la branche :** `feature/[nom-de-la-feature]`
+**Branch name:** `feature/[feature-name]`
 
-Cette branche contiendra l'intégralité de la feature mais ne sera mergée dans `main` qu'une fois toutes les PRs incrémentales validées.
+This branch will contain the entire feature but will only be merged into `main` once all incremental PRs are validated.
 
-### Plan de découpage
+### Breakdown Plan
 
-> Découpez votre feature en **5-10 petites PRs** maximum (idéalement 3-5).
-> Chaque PR doit :
-> - Faire moins de 400 lignes (idéalement 50-200)
-> - Avoir un objectif unique et clair
-> - Être fonctionnelle et testée (même si feature incomplète)
-> - Pointer vers la branche d'intégration (pas main)
+> Break your feature into **5-10 small PRs** maximum (ideally 3-5).
+> Each PR must:
+> - Be less than 400 lines (ideally 50-200)
+> - Have a single, clear objective
+> - Be functional and tested (even if feature incomplete)
+> - Point to the integration branch (not main)
 
-#### Step 1 : [Titre court]
-**Branch:** `feature/[nom]-step-1-[description]`
+#### Step 1: [Short title]
+**Branch:** `feature/[name]-step-1-[description]`
 
-**Objectif :**
-> Description en 1 phrase de ce que fait cette PR.
-> Exemple : "Ajouter la migration et la colonne cuisine_type à la table restaurants"
+**Objective:**
+> 1-sentence description of what this PR does.
+> Example: "Add migration and cuisine_type column to restaurants table"
 
-**Contenu :**
+**Content:**
 - [ ] Migration `add_cuisine_type_to_restaurants`
-- [ ] Index sur la colonne
-- [ ] Tests de migration (up/down)
+- [ ] Index on column
+- [ ] Migration tests (up/down)
 
-**Estimation :** 30 min dev + 15 min review
+**Estimate:** 30 min dev + 15 min review
 
-**Tests inclus :**
-- [ ] Migration réversible
-- [ ] Index créé correctement
-
----
-
-#### Step 2 : [Titre court]
-**Branch:** `feature/[nom]-step-2-[description]`
-
-**Objectif :**
-> Exemple : "Ajouter les validations et le scope de filtrage au modèle Restaurant"
-
-**Contenu :**
-- [ ] Constante `CUISINE_TYPES`
-- [ ] Validation `inclusion` sur `cuisine_type`
-- [ ] Scope `by_cuisine`
-- [ ] Tests unitaires du modèle
-
-**Estimation :** 1h dev + 30 min review
-
-**Tests inclus :**
-- [ ] Tests de validation
-- [ ] Tests du scope
-- [ ] Edge cases (nil, valeur invalide)
+**Tests included:**
+- [ ] Reversible migration
+- [ ] Index created correctly
 
 ---
 
-#### Step 3 : [Titre court]
-**Branch:** `feature/[nom]-step-3-[description]`
+#### Step 2: [Short title]
+**Branch:** `feature/[name]-step-2-[description]`
 
-**Objectif :**
-> Exemple : "Modifier le controller pour accepter le filtre cuisine"
+**Objective:**
+> Example: "Add validations and filter scope to Restaurant model"
 
-**Contenu :**
-- [ ] Modification de `RestaurantsController#index`
-- [ ] Ajout du paramètre `cuisine` dans strong params
-- [ ] Tests de request specs
+**Content:**
+- [ ] `CUISINE_TYPES` constant
+- [ ] `inclusion` validation on `cuisine_type`
+- [ ] `by_cuisine` scope
+- [ ] Model unit tests
 
-**Estimation :** 1h dev + 30 min review
+**Estimate:** 1h dev + 30 min review
 
-**Tests inclus :**
-- [ ] Tests de controller avec/sans filtre
-- [ ] Tests d'autorisation si applicable
-
----
-
-#### Step 4 : [Titre court]
-**Branch:** `feature/[nom]-step-4-[description]`
-
-**Objectif :**
-> Exemple : "Ajouter l'interface utilisateur de filtrage"
-
-**Contenu :**
-- [ ] Formulaire de filtre dans `index.html.erb`
-- [ ] Turbo Frame pour le rechargement dynamique
-- [ ] Styling Tailwind
-
-**Estimation :** 2h dev + 1h review
-
-**Tests inclus :**
-- [ ] Tests de feature avec Capybara
-- [ ] Tests JavaScript si interactions complexes
+**Tests included:**
+- [ ] Validation tests
+- [ ] Scope tests
+- [ ] Edge cases (nil, invalid value)
 
 ---
 
-#### Step 5 : [Titre court] (optionnel)
-**Branch:** `feature/[nom]-step-5-[description]`
+#### Step 3: [Short title]
+**Branch:** `feature/[name]-step-3-[description]`
 
-**Objectif :**
-> Exemple : "Tests d'intégration end-to-end et documentation"
+**Objective:**
+> Example: "Modify controller to accept cuisine filter"
 
-**Contenu :**
-- [ ] Tests d'intégration complets
-- [ ] Documentation mise à jour
-- [ ] Seeds mis à jour
+**Content:**
+- [ ] Modify `RestaurantsController#index`
+- [ ] Add `cuisine` parameter in strong params
+- [ ] Request spec tests
 
-**Estimation :** 1h dev + 30 min review
+**Estimate:** 1h dev + 30 min review
 
-**Tests inclus :**
-- [ ] Scénario utilisateur complet
-- [ ] Tests de régression
+**Tests included:**
+- [ ] Controller tests with/without filter
+- [ ] Authorization tests if applicable
 
 ---
 
-### Stratégie de merge
+#### Step 4: [Short title]
+**Branch:** `feature/[name]-step-4-[description]`
+
+**Objective:**
+> Example: "Add filtering user interface"
+
+**Content:**
+- [ ] Filter form in `index.html.erb`
+- [ ] Turbo Frame for dynamic reload
+- [ ] Tailwind styling
+
+**Estimate:** 2h dev + 1h review
+
+**Tests included:**
+- [ ] Feature tests with Capybara
+- [ ] JavaScript tests if complex interactions
+
+---
+
+#### Step 5: [Short title] (optional)
+**Branch:** `feature/[name]-step-5-[description]`
+
+**Objective:**
+> Example: "End-to-end integration tests and documentation"
+
+**Content:**
+- [ ] Complete integration tests
+- [ ] Updated documentation
+- [ ] Updated seeds
+
+**Estimate:** 1h dev + 30 min review
+
+**Tests included:**
+- [ ] Complete user scenario
+- [ ] Regression tests
+
+---
+
+### Merge Strategy
 
 ```bash
-# 1. Créer la branche d'intégration
-git checkout -b feature/[nom-de-la-feature]
-git push -u origin feature/[nom-de-la-feature]
+# 1. Create integration branch
+git checkout -b feature/[feature-name]
+git push -u origin feature/[feature-name]
 
-# 2. Pour chaque step :
-git checkout feature/[nom-de-la-feature]
-git checkout -b feature/[nom]-step-X-[description]
-# ... développer ...
+# 2. For each step:
+git checkout feature/[feature-name]
+git checkout -b feature/[name]-step-X-[description]
+# ... develop ...
 git commit -m "feat: step X description"
-git push -u origin feature/[nom]-step-X-[description]
+git push -u origin feature/[name]-step-X-[description]
 
-# 3. Créer une PR vers la branche d'intégration
-gh pr create --base feature/[nom-de-la-feature] \
-  --title "[Step X/Y] Description courte" \
-  --body "Part of #[issue]. Description détaillée."
+# 3. Create PR to integration branch
+gh pr create --base feature/[feature-name] \
+  --title "[Step X/Y] Short description" \
+  --body "Part of #[issue]. Detailed description."
 
-# 4. Review + merge de la step
-# 5. Répéter pour chaque step
+# 4. Review + merge the step
+# 5. Repeat for each step
 
-# 6. Une fois toutes les steps mergées :
+# 6. Once all steps are merged:
 gh pr create --base main \
-  --title "Feature: [Nom complet de la feature]" \
+  --title "Feature: [Full feature name]" \
   --body "Closes #[issue]. All incremental PRs reviewed and merged."
 ```
 
-### Checklist de découpage
+### Breakdown Checklist
 
-- [ ] La feature est découpée en **3-10 steps maximum**
-- [ ] Chaque step fait **moins de 400 lignes**
-- [ ] Chaque step est **autonome et testée**
-- [ ] L'ordre des steps est **logique** (dépendances respectées)
-- [ ] Chaque step a une **estimation** de temps
-- [ ] Le **plan complet** est documenté avant de commencer
+- [ ] Feature is broken into **3-10 steps maximum**
+- [ ] Each step is **less than 400 lines**
+- [ ] Each step is **autonomous and tested**
+- [ ] Step order is **logical** (dependencies respected)
+- [ ] Each step has a time **estimate**
+- [ ] The **complete plan** is documented before starting
 
-### Règles de découpage
+### Breakdown Rules
 
-#### ✅ Bon découpage
-- Migration seule (step 1)
-- Modèle + validations (step 2)
+#### ✅ Good Breakdown
+- Migration alone (step 1)
+- Model + validations (step 2)
 - Controller + routes (step 3)
-- Views + composants (step 4)
-- Tests d'intégration (step 5)
+- Views + components (step 4)
+- Integration tests (step 5)
 
-#### ❌ Mauvais découpage
-- Migration + modèle + controller + views (trop gros)
-- Juste les validations sans tests (incomplet)
-- Moitié du controller (pas autonome)
-- Tous les tests à la fin (risqué)
+#### ❌ Bad Breakdown
+- Migration + model + controller + views (too big)
+- Just validations without tests (incomplete)
+- Half the controller (not autonomous)
+- All tests at the end (risky)
 
-### Pour les coding agents
+### For Coding Agents
 
-Quand vous utilisez un coding agent (Claude Code, GitHub Copilot, etc.) :
+When using a coding agent (Claude Code, GitHub Copilot, etc.):
 
-**❌ Ne demandez pas :**
+**❌ Don't ask:**
 ```
-"Implémente complètement la feature de [nom]"
-```
-
-**✅ Demandez plutôt :**
-```
-"Implémente la Step 1 de la feature spec [nom] : [description step 1]"
+"Fully implement the [name] feature"
 ```
 
-Puis une fois la Step 1 reviewée et mergée :
+**✅ Ask instead:**
 ```
-"Implémente la Step 2 de la feature spec [nom] : [description step 2]"
+"Implement Step 1 of the [name] feature spec: [step 1 description]"
 ```
 
-Et ainsi de suite.
+Then once Step 1 is reviewed and merged:
+```
+"Implement Step 2 of the [name] feature spec: [step 2 description]"
+```
 
-**Avantages :**
-- 🎯 Contexte ciblé → moins d'erreurs
-- ✅ Review rapide → feedback immédiat
-- 🔁 Correction facile → pas de refonte totale
-- 📈 Progression visible → confiance de l'équipe
+And so on.
+
+**Advantages:**
+- 🎯 Focused context → fewer errors
+- ✅ Quick review → immediate feedback
+- 🔁 Easy correction → no total refactoring
+- 📈 Visible progress → team confidence
 
 ---
 
-## 🏗️ Cadrage technique
+## 🏗️ Technical Scope
 
-### Modèles impactés
+### Impacted Models
 
-#### Nouveaux modèles
+#### New Models
 ```ruby
-# Si création d'un nouveau modèle
+# If creating a new model
 class NewModel < ApplicationRecord
-  # Attributs principaux
-  # - attribute_name: type (contraintes)
+  # Main attributes
+  # - attribute_name: type (constraints)
 
   # Associations
   # belongs_to :xxx
   # has_many :yyy
 
-  # Validations principales
+  # Main validations
   # validates :xxx, presence: true
 end
 ```
 
-#### Modifications de modèles existants
-**Modèle :** `ExistingModel`
+#### Existing Model Modifications
+**Model:** `ExistingModel`
 
-**Changements :**
-- [ ] Ajout d'attribut : `new_attribute:string`
-- [ ] Ajout de relation : `has_many :new_relation`
-- [ ] Nouvelle validation : `validates :xxx, ...`
-- [ ] Nouveau scope : `scope :by_xxx, -> { ... }`
-- [ ] Nouvelle méthode : `def calculate_xxx`
+**Changes:**
+- [ ] Add attribute: `new_attribute:string`
+- [ ] Add relation: `has_many :new_relation`
+- [ ] New validation: `validates :xxx, ...`
+- [ ] New scope: `scope :by_xxx, -> { ... }`
+- [ ] New method: `def calculate_xxx`
 
-### Règles de validation
+### Validation Rules
 
-> 🔴 **OBLIGATOIRE:** Pour chaque champ utilisateur, spécifier les règles de validation.
+> 🔴 **REQUIRED:** For each user field, specify validation rules.
 
-| Champ | Type | Requis | Règles de validation | Message d'erreur |
+| Field | Type | Required | Validation Rules | Error Message |
 |-------|------|--------|----------------------|------------------|
-| `name` | string | Oui | presence, length: 2..100 | "Le nom est obligatoire" |
-| `email` | string | Oui | format: URI::MailTo::EMAIL_REGEXP | "Format email invalide" |
-| `amount` | decimal | Oui | numericality: { greater_than: 0 } | "Le montant doit être positif" |
-| `status` | string | Oui | inclusion: { in: STATUSES } | "Statut invalide" |
-| `description` | text | Non | length: { maximum: 1000 } | "Description trop longue (max 1000)" |
+| `name` | string | Yes | presence, length: 2..100 | "Name is required" |
+| `email` | string | Yes | format: URI::MailTo::EMAIL_REGEXP | "Invalid email format" |
+| `amount` | decimal | Yes | numericality: { greater_than: 0 } | "Amount must be positive" |
+| `status` | string | Yes | inclusion: { in: STATUSES } | "Invalid status" |
+| `description` | text | No | length: { maximum: 1000 } | "Description too long (max 1000)" |
 
 ### Migration(s)
 
@@ -468,13 +468,13 @@ end
 # db/migrate/YYYYMMDDHHMMSS_add_feature_name.rb
 class AddFeatureName < ActiveRecord::Migration[8.1]
   def change
-    # Ajout de colonnes
+    # Add columns
     add_column :table_name, :column_name, :type, null: false, default: value
 
-    # Ajout d'index
+    # Add index
     add_index :table_name, :column_name
 
-    # Création de table
+    # Create table
     create_table :new_table do |t|
       t.string :name, null: false
       t.references :parent, foreign_key: true
@@ -484,27 +484,27 @@ class AddFeatureName < ActiveRecord::Migration[8.1]
 end
 ```
 
-**⚠️ Points d'attention migration :**
-- [ ] Migration réversible (`up`/`down` ou méthode `change`)
-- [ ] Index ajoutés sur les colonnes clés
-- [ ] Valeurs par défaut définies si nécessaire
-- [ ] Foreign keys avec `on_delete` approprié
+**⚠️ Migration attention points:**
+- [ ] Reversible migration (`up`/`down` or `change` method)
+- [ ] Indexes added on key columns
+- [ ] Default values defined if necessary
+- [ ] Foreign keys with appropriate `on_delete`
 
 ### Controllers
 
-#### Nouveaux controllers
-- `NewController` avec actions : `index`, `show`, `new`, `create`, `edit`, `update`, `destroy`
+#### New Controllers
+- `NewController` with actions: `index`, `show`, `new`, `create`, `edit`, `update`, `destroy`
 
-#### Modifications de controllers existants
-**Controller :** `ExistingController`
+#### Existing Controller Modifications
+**Controller:** `ExistingController`
 
-**Changements :**
-- [ ] Nouvelle action : `custom_action`
-- [ ] Modification des strong parameters
-- [ ] Ajout de before_action
-- [ ] Modification de la logique métier
+**Changes:**
+- [ ] New action: `custom_action`
+- [ ] Modify strong parameters
+- [ ] Add before_action
+- [ ] Modify business logic
 
-**Strong parameters :**
+**Strong parameters:**
 ```ruby
 def model_params
   params.require(:model_name).permit(:attr1, :attr2, :attr3)
@@ -516,10 +516,10 @@ end
 ```ruby
 # config/routes.rb
 resources :resource_name do
-  # Routes imbriquées si nécessaire
+  # Nested routes if necessary
   resources :nested_resource, only: [:index, :create, :destroy]
 
-  # Routes custom
+  # Custom routes
   member do
     post :custom_action
   end
@@ -530,23 +530,25 @@ resources :resource_name do
 end
 ```
 
-### Services (si logique complexe)
+### Services (if complex logic)
 
-**Service :** `FeatureNameService`
+**Service:** `FeatureNameService`
 
-**Responsabilité :**
-> Décrivez en 1-2 phrases ce que fait ce service.
+**Responsibility:**
+> Describe in 1-2 sentences what this service does.
 
-**Méthodes principales :**
+**Main methods:**
 ```ruby
 class FeatureNameService
+  include Dry::Monads[:result]
+
   def initialize(params)
     @params = params
   end
 
   def call
-    # Logique métier complexe ici
-    # Retourne un résultat ou lève une exception
+    # Complex business logic here
+    # Returns Success or Failure
   end
 
   private
@@ -559,9 +561,9 @@ end
 
 ### Policies (Pundit)
 
-**Policy :** `ModelPolicy`
+**Policy:** `ModelPolicy`
 
-**Nouvelles règles :**
+**New rules:**
 ```ruby
 class ModelPolicy < ApplicationPolicy
   def action_name?
@@ -572,13 +574,13 @@ end
 
 ### Views & Components
 
-#### Nouvelles vues
+#### New Views
 - `app/views/resource_name/index.html.erb`
 - `app/views/resource_name/show.html.erb`
 - `app/views/resource_name/_form.html.erb`
 
-#### Nouveaux components
-**Component :** `FeatureNameComponent`
+#### New Components
+**Component:** `FeatureNameComponent`
 
 ```ruby
 class FeatureNameComponent < ViewComponent::Base
@@ -587,19 +589,19 @@ class FeatureNameComponent < ViewComponent::Base
   end
 
   def render?
-    # Condition d'affichage
+    # Display condition
   end
 end
 ```
 
-#### Modifications de vues existantes
-- [ ] Vue à modifier : `path/to/view.html.erb`
-- [ ] Type de modification : [Ajout d'un lien / Nouveau formulaire / Affichage de données]
+#### Existing View Modifications
+- [ ] View to modify: `path/to/view.html.erb`
+- [ ] Modification type: [Add link / New form / Display data]
 
 ### JavaScript (Stimulus)
 
-#### Nouveaux controllers Stimulus
-**Controller :** `feature_name_controller.js`
+#### New Stimulus Controllers
+**Controller:** `feature_name_controller.js`
 
 ```javascript
 import { Controller } from "@hotwire/stimulus"
@@ -609,49 +611,49 @@ export default class extends Controller {
   static values = { param: String }
 
   connect() {
-    // Initialisation
+    // Initialization
   }
 
   action() {
-    // Logique
+    // Logic
   }
 }
 ```
 
 ### Jobs (Background)
 
-**Job :** `FeatureNameJob`
+**Job:** `FeatureNameJob`
 
 ```ruby
 class FeatureNameJob < ApplicationJob
   queue_as :default
 
   def perform(param)
-    # Traitement asynchrone
+    # Async processing
   end
 end
 ```
 
-**Déclenchement :**
-- Où : `ModelName#method_name`
-- Quand : `after_commit :enqueue_job`
+**Trigger:**
+- Where: `ModelName#method_name`
+- When: `after_commit :enqueue_job`
 
 ---
 
-## 🧪 Stratégie de tests
+## 🧪 Testing Strategy
 
-### Tests de modèle (RSpec)
+### Model Tests (RSpec)
 
-**Fichier :** `spec/models/model_name_spec.rb`
+**File:** `spec/models/model_name_spec.rb`
 
-**Tests à écrire :**
+**Tests to write:**
 - [ ] Validations (presence, format, uniqueness, etc.)
 - [ ] Associations (belongs_to, has_many, etc.)
-- [ ] Scopes (vérifier les requêtes SQL)
-- [ ] Méthodes métier (logique, edge cases)
+- [ ] Scopes (verify SQL queries)
+- [ ] Business methods (logic, edge cases)
 - [ ] Callbacks (after_save, before_destroy, etc.)
 
-**Exemples de tests :**
+**Test examples:**
 ```ruby
 RSpec.describe ModelName, type: :model do
   describe "validations" do
@@ -668,17 +670,17 @@ RSpec.describe ModelName, type: :model do
 end
 ```
 
-### Tests de controller (Request specs)
+### Controller Tests (Request specs)
 
-**Fichier :** `spec/requests/controller_name_spec.rb`
+**File:** `spec/requests/controller_name_spec.rb`
 
-**Tests à écrire :**
-- [ ] Actions CRUD (index, show, create, update, destroy)
-- [ ] Autorisations (utilisateur connecté, propriétaire, etc.)
-- [ ] Redirections et flash messages
-- [ ] Réponses HTTP (200, 302, 404, 422, etc.)
+**Tests to write:**
+- [ ] CRUD actions (index, show, create, update, destroy)
+- [ ] Authorizations (logged user, owner, etc.)
+- [ ] Redirects and flash messages
+- [ ] HTTP responses (200, 302, 404, 422, etc.)
 
-**Exemples de tests :**
+**Test examples:**
 ```ruby
 RSpec.describe "ResourceName", type: :request do
   let(:user) { create(:user) }
@@ -703,16 +705,16 @@ RSpec.describe "ResourceName", type: :request do
 end
 ```
 
-### Tests d'intégration (Feature specs)
+### Integration Tests (Feature specs)
 
-**Fichier :** `spec/features/feature_name_spec.rb`
+**File:** `spec/features/feature_name_spec.rb`
 
-**Scénarios à tester :**
-- [ ] Parcours utilisateur complet (happy path)
-- [ ] Cas d'erreur (formulaire invalide, accès refusé)
-- [ ] Interactions JavaScript (si applicable)
+**Scenarios to test:**
+- [ ] Complete user journey (happy path)
+- [ ] Error cases (invalid form, denied access)
+- [ ] JavaScript interactions (if applicable)
 
-**Exemples de tests :**
+**Test examples:**
 ```ruby
 RSpec.describe "Feature Name", type: :feature do
   scenario "user completes the feature workflow" do
@@ -723,27 +725,27 @@ RSpec.describe "Feature Name", type: :feature do
     fill_in "Name", with: "Example"
     click_button "Create"
 
-    expect(page).to have_content("Resource créé avec succès")
+    expect(page).to have_content("Resource created successfully")
     expect(page).to have_current_path(resource_path(ResourceName.last))
   end
 end
 ```
 
-### Tests de component
+### Component Tests
 
-**Fichier :** `spec/components/component_name_component_spec.rb`
+**File:** `spec/components/component_name_component_spec.rb`
 
-**Tests à écrire :**
-- [ ] Rendu avec différents params
-- [ ] Conditions d'affichage (`render?`)
-- [ ] Contenu généré
+**Tests to write:**
+- [ ] Rendering with different params
+- [ ] Display conditions (`render?`)
+- [ ] Generated content
 
-### Tests de policy
+### Policy Tests
 
-**Fichier :** `spec/policies/policy_name_spec.rb`
+**File:** `spec/policies/policy_name_spec.rb`
 
-**Tests à écrire :**
-- [ ] Permissions par rôle
+**Tests to write:**
+- [ ] Permissions by role
 - [ ] Edge cases
 
 ```ruby
@@ -765,193 +767,191 @@ end
 
 ---
 
-## 🔒 Considérations de sécurité
+## 🔒 Security Considerations
 
-- [ ] **Strong parameters** : tous les attributs sont filtrés
-- [ ] **Autorisations Pundit** : toutes les actions sont protégées
-- [ ] **Validations** : tous les inputs utilisateur sont validés
-- [ ] **Injection SQL** : utiliser ActiveRecord, pas de SQL brut
-- [ ] **XSS** : utiliser les helpers Rails (sanitize, escape)
-- [ ] **CSRF** : tokens présents sur les formulaires
-- [ ] **Mass assignment** : utiliser `permit` correctement
-- [ ] **Données sensibles** : pas de logs ou affichage de secrets
-
----
-
-## ⚡ Considérations de performance
-
-- [ ] **N+1 queries** : utiliser `includes`/`preload`/`eager_load`
-- [ ] **Index DB** : ajouter des index sur les colonnes requêtées
-- [ ] **Cache** : identifier les données à mettre en cache
-- [ ] **Background jobs** : tâches longues en asynchrone
-- [ ] **Pagination** : limiter les résultats des listes
-- [ ] **Requêtes lourdes** : optimiser avec `select`, `pluck`, `exists?`
+- [ ] **Strong parameters**: all attributes are filtered
+- [ ] **Pundit authorizations**: all actions are protected
+- [ ] **Validations**: all user inputs are validated
+- [ ] **SQL injection**: use ActiveRecord, no raw SQL
+- [ ] **XSS**: use Rails helpers (sanitize, escape)
+- [ ] **CSRF**: tokens present on forms
+- [ ] **Mass assignment**: use `permit` correctly
+- [ ] **Sensitive data**: no logs or display of secrets
 
 ---
 
-## 📱 Considérations UI/UX
+## ⚡ Performance Considerations
 
-> 🔴 **OBLIGATOIRE pour features avec UI:** Documenter les états interactifs.
+- [ ] **N+1 queries**: use `includes`/`preload`/`eager_load`
+- [ ] **DB indexes**: add indexes on queried columns
+- [ ] **Cache**: identify data to cache
+- [ ] **Background jobs**: long tasks asynchronously
+- [ ] **Pagination**: limit list results
+- [ ] **Heavy queries**: optimize with `select`, `pluck`, `exists?`
 
-### Checklist UI/UX
-- [ ] **Responsive** : design adapté mobile/tablet/desktop
-- [ ] **Accessibilité** : labels, aria-labels, contraste (WCAG 2.1 AA minimum)
-- [ ] **Feedback utilisateur** : flash messages, états de chargement
-- [ ] **Validation côté client** : Stimulus + HTML5 validation
-- [ ] **Error handling** : messages d'erreur clairs et actionnables
+---
 
-### États interactifs (Hotwire/Turbo)
+## 📱 UI/UX Considerations
 
-| État | Description | Implémentation |
+> 🔴 **REQUIRED for features with UI:** Document interactive states.
+
+### UI/UX Checklist
+- [ ] **Responsive**: mobile/tablet/desktop adapted design
+- [ ] **Accessibility**: labels, aria-labels, contrast (WCAG 2.1 AA minimum)
+- [ ] **User feedback**: flash messages, loading states
+- [ ] **Client-side validation**: Stimulus + HTML5 validation
+- [ ] **Error handling**: clear and actionable error messages
+
+### Interactive States (Hotwire/Turbo)
+
+| State | Description | Implementation |
 |------|-------------|----------------|
-| **Loading** | Pendant le chargement | Turbo Frame avec spinner, `aria-busy="true"` |
-| **Success** | Action réussie | Flash notice, Turbo Stream append/replace |
-| **Error** | Échec de l'action | Flash alert, formulaire préservé, erreurs inline |
-| **Empty** | Aucune donnée | Message explicatif + call-to-action |
-| **Disabled** | Action non disponible | Bouton désactivé + tooltip explicatif |
+| **Loading** | During loading | Turbo Frame with spinner, `aria-busy="true"` |
+| **Success** | Action succeeded | Flash notice, Turbo Stream append/replace |
+| **Error** | Action failed | Flash alert, preserved form, inline errors |
+| **Empty** | No data | Explanatory message + call-to-action |
+| **Disabled** | Action unavailable | Disabled button + explanatory tooltip |
 
-### Messages utilisateur
+### User Messages
 
-| Contexte | Type | Message |
+| Context | Type | Message |
 |----------|------|---------|
-| Création réussie | success | "[Ressource] créé(e) avec succès" |
-| Modification réussie | success | "[Ressource] mis(e) à jour" |
-| Suppression réussie | success | "[Ressource] supprimé(e)" |
-| Erreur validation | error | "Veuillez corriger les erreurs ci-dessous" |
-| Non autorisé | error | "Vous n'êtes pas autorisé à effectuer cette action" |
-| Non trouvé | error | "[Ressource] introuvable" |
+| Successful creation | success | "[Resource] created successfully" |
+| Successful update | success | "[Resource] updated" |
+| Successful deletion | success | "[Resource] deleted" |
+| Validation error | error | "Please correct the errors below" |
+| Unauthorized | error | "You are not authorized to perform this action" |
+| Not found | error | "[Resource] not found" |
 
 ---
 
-## 🚀 Plan de déploiement
+## 🚀 Deployment Plan
 
-### Prérequis
-- [ ] Migration testée (up & down)
-- [ ] Seeds mis à jour si nécessaire
-- [ ] Assets precompilés (si changements CSS/JS)
-- [ ] Variables d'environnement ajoutées (si nécessaire)
+### Prerequisites
+- [ ] Migration tested (up & down)
+- [ ] Seeds updated if necessary
+- [ ] Assets precompiled (if CSS/JS changes)
+- [ ] Environment variables added (if necessary)
 
-### Étapes
-1. Déployer le code
-2. Lancer les migrations : `rails db:migrate`
-3. Redémarrer les workers si jobs ajoutés
-4. Vérifier les logs
-5. Tester en production
+### Steps
+1. Deploy code
+2. Run migrations: `rails db:migrate`
+3. Restart workers if jobs added
+4. Check logs
+5. Test in production
 
-### Rollback plan
-> Comment revenir en arrière si problème ?
+### Rollback Plan
+> How to rollback if there's a problem?
 ```bash
-# Rollback de migration
+# Migration rollback
 rails db:rollback STEP=1
 
-# Redéployer version précédente
+# Redeploy previous version
 kamal rollback
 ```
 
 ---
 
-## 📚 Documentation à mettre à jour
+## 📚 Documentation to Update
 
-- [ ] `README.md` : si feature majeure
-- [ ] `.github/project.md` : si nouvelle fonctionnalité principale
-- [ ] `.github/CONTRIBUTING.md` : si nouvelles conventions
-- [ ] API docs : si endpoints exposés
-- [ ] User guide : si feature visible utilisateur
+- [ ] `README.md`: if major feature
+- [ ] `.github/project.md`: if new main functionality
+- [ ] `.github/CONTRIBUTING.md`: if new conventions
+- [ ] API docs: if endpoints exposed
+- [ ] User guide: if user-visible feature
 
 ---
 
-## ✅ Checklist finale avant merge
+## ✅ Final Checklist Before Merge
 
 ### Code
-- [ ] Code écrit et fonctionnel
-- [ ] Rubocop passe sans erreurs
-- [ ] Pas de code commenté ou de `binding.pry`
-- [ ] Nomenclature respectée
+- [ ] Code written and functional
+- [ ] Rubocop passes without errors
+- [ ] No commented code or `binding.pry`
+- [ ] Naming conventions respected
 
 ### Tests
-- [ ] Tous les tests passent
-- [ ] Coverage maintenue (>90%)
-- [ ] Tests unitaires écrits
-- [ ] Tests d'intégration écrits
-- [ ] Edge cases testés
+- [ ] All tests pass
+- [ ] Coverage maintained (>90%)
+- [ ] Unit tests written
+- [ ] Integration tests written
+- [ ] Edge cases tested
 
-### Sécurité
-- [ ] Brakeman ne remonte pas de nouvelles vulnérabilités
+### Security
+- [ ] Brakeman reports no new vulnerabilities
 - [ ] Bundler Audit OK
-- [ ] Policies testées
-- [ ] Strong parameters vérifiés
+- [ ] Policies tested
+- [ ] Strong parameters verified
 
 ### Documentation
-- [ ] Code commenté si logique complexe
-- [ ] README mis à jour si nécessaire
-- [ ] CHANGELOG.md mis à jour
+- [ ] Code commented if complex logic
+- [ ] README updated if necessary
+- [ ] CHANGELOG.md updated
 
 ### Review
-- [ ] PR créée avec description claire
-- [ ] Screenshots/GIF si changements UI
-- [ ] Reviewer assigné
-- [ ] CI/CD vert
+- [ ] PR created with clear description
+- [ ] Screenshots/GIF if UI changes
+- [ ] Reviewer assigned
+- [ ] CI/CD green
 
 ---
 
 ## 💡 Notes & Questions
 
-> Espace libre pour noter des questions, décisions techniques, ou points d'attention particuliers.
+> Free space to note questions, technical decisions, or particular points of attention.
 
-**Questions ouvertes :**
+**Open questions:**
 -
 
-**Décisions techniques :**
+**Technical decisions:**
 -
 
-**Points d'attention :**
+**Points of attention:**
 -
 
-**Dépendances externes :**
+**External dependencies:**
 -
 
 ---
 
-**Date de création :** `[YYYY-MM-DD]`
+**Creation date:** `[YYYY-MM-DD]`
 
-**Auteur :** `[@username]`
+**Author:** `[@username]`
 
-**Reviewers :** `[@username1, @username2]`
+**Reviewers:** `[@username1, @username2]`
 
-**Statut :** `[Draft / En Review / Ready for Dev / In Progress / Completed]`
+**Status:** `[Draft / In Review / Ready for Dev / In Progress / Completed]`
 
 ---
 
-## 📋 Critères de Review (@feature_reviewer_agent)
+## 📋 Review Criteria (@feature_reviewer_agent)
 
-> Cette section récapitule les critères que `@feature_reviewer_agent` vérifiera.
+> This section summarizes the criteria that `@feature_reviewer_agent` will verify.
 
-### MUST HAVE (Bloquant si absent)
-- [ ] Objectif et valeur clairement énoncés
-- [ ] Personas identifiés
-- [ ] User story principale documentée
-- [ ] Critères d'acceptation testables (vérifiables par oui/non)
-- [ ] Scénarios Gherkin pour acceptance tests
-- [ ] Edge cases documentés (minimum 3)
-- [ ] Matrice d'autorisation complète
+### MUST HAVE (Blocking if absent)
+- [ ] Objective and value clearly stated
+- [ ] Personas identified
+- [ ] Main user story documented
+- [ ] Testable acceptance criteria (verifiable by yes/no)
+- [ ] Gherkin scenarios for acceptance tests
+- [ ] Edge cases documented (minimum 3)
+- [ ] Complete authorization matrix
 
-### SHOULD HAVE (Recommandé)
-- [ ] Tableau des règles de validation
-- [ ] Composants techniques listés
-- [ ] Changements base de données documentés
-- [ ] Policies Pundit spécifiées
-- [ ] Points d'intégration identifiés
+### SHOULD HAVE (Recommended)
+- [ ] Validation rules table
+- [ ] Technical components listed
+- [ ] Database changes documented
+- [ ] Pundit policies specified
+- [ ] Integration points identified
 
-### IF UI (Obligatoire si feature UI)
-- [ ] États loading/error/empty/success documentés
-- [ ] Messages utilisateur définis
-- [ ] Comportement responsive spécifié
-- [ ] Accessibilité considérée (WCAG 2.1 AA)
+### IF UI (Required if UI feature)
+- [ ] Loading/error/empty/success states documented
+- [ ] User messages defined
+- [ ] Responsive behavior specified
+- [ ] Accessibility considered (WCAG 2.1 AA)
 
-### IF Medium/Large (Obligatoire si > 1 jour)
-- [ ] Découpage en PRs (3-10 steps)
-- [ ] Chaque PR < 400 lignes (idéalement 50-200)
-- [ ] Dépendances entre PRs claires
-- [ ] Tests inclus dans chaque PR
-
-```
+### IF Medium/Large (Required if > 1 day)
+- [ ] Breaking down into PRs (3-10 steps)
+- [ ] Each PR < 400 lines (ideally 50-200)
+- [ ] Clear dependencies between PRs
+- [ ] Tests included in each PR
