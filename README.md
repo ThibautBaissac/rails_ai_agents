@@ -142,6 +142,7 @@ Modern Rails architecture with clear separation of concerns, SOLID principles, a
 - **`@model_agent`** - Thin ActiveRecord models
 - **`@controller_agent`** - Thin RESTful controllers
 - **`@service_agent`** - Business logic service objects
+- **`@command_agent`** - Command Pattern with undo/redo, command queues
 - **`@query_agent`** - Complex query objects
 - **`@form_agent`** - Multi-model form objects
 - **`@presenter_agent`** - View logic presenters
@@ -269,6 +270,7 @@ Skills are focused knowledge documents that contain:
 - **`rails-architecture`** - Code organization decisions, layered architecture
 - **`rails-concern`** - Shared behavior with concerns
 - **`rails-service-object`** - Business logic encapsulation
+- **`command-pattern`** - Command Pattern with undo/redo, command queues, and history
 - **`rails-query-object`** - Complex database queries
 - **`rails-presenter`** - View logic separation
 - **`rails-controller`** - RESTful controller patterns

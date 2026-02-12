@@ -1,5 +1,7 @@
 # Service Object Patterns
 
+> **Note**: This document covers Service Object patterns. For the formal **Command Pattern** (with undo/redo, command queues, and history), see the [`command-pattern` skill](../../command-pattern/SKILL.md).
+
 ## Basic Service Structure
 
 ```ruby
@@ -30,6 +32,8 @@ end
 ## Service Categories
 
 ### 1. Command Services (Write Operations)
+
+> **Terminology**: "Command Services" here refers to services that perform **write operations** (create, update, delete). This is different from the formal [**Command Pattern**](../../command-pattern/SKILL.md) which encapsulates requests as objects with undo/redo capabilities.
 
 Single action that changes state:
 
