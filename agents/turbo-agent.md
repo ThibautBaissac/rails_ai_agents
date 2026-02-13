@@ -433,21 +433,38 @@ end
 class Message < ApplicationRecord
   belongs_to :chat
 
-  # Broadcast to chat channel after create
-  after_create_commit -> {
+  # ❌ NO callbacks for broadcasting - belongs in controller!
+
+  # Helper methods (called from controller)
+  def broadcast_creation
     broadcast_prepend_to chat, target: "messages"
-  }
+  end
 
-  # Broadcast update
-  after_update_commit -> {
+  def broadcast_update
     broadcast_replace_to chat
-  }
+  end
 
-  # Broadcast removal
-  after_destroy_commit -> {
+  def broadcast_removal
     broadcast_remove_to chat
-  }
+  end
 end
+
+# Controller handles broadcasting explicitly:
+# class MessagesController < ApplicationController
+#   def create
+#     @message = @chat.messages.build(message_params)
+#
+#     respond_to do |format|
+#       if @message.save
+#         @message.broadcast_creation  # ✅ Explicit
+#         format.turbo_stream
+#         format.html { redirect_to @chat }
+#       else
+#         format.html { render :new, status: :unprocessable_entity }
+#       end
+#     end
+#   end
+# end
 ```
 
 ### View Subscription
@@ -473,10 +490,9 @@ end
 class Notification < ApplicationRecord
   belongs_to :user
 
-  after_create_commit :broadcast_to_user
+  # ❌ NO after_create_commit for broadcasting - belongs in controller!
 
-  private
-
+  # Helper method (called from controller)
   def broadcast_to_user
     broadcast_prepend_to(
       "user_#{user_id}_notifications",
@@ -486,6 +502,20 @@ class Notification < ApplicationRecord
     )
   end
 end
+
+# Controller handles broadcasting:
+# class NotificationsController < ApplicationController
+#   def create
+#     @notification = current_user.notifications.build(notification_params)
+#
+#     if @notification.save
+#       @notification.broadcast_to_user  # ✅ Explicit
+#       redirect_to notifications_path
+#     else
+#       render :new, status: :unprocessable_entity
+#     end
+#   end
+# end
 ```
 
 ```erb

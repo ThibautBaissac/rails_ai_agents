@@ -15,6 +15,17 @@ Rails provides multiple caching layers:
 - **HTTP caching**: Browser and CDN caching
 - **Query caching**: Automatic within requests
 
+**⚠️ IMPORTANT - Cache Invalidation Philosophy:**
+
+This skill shows the **standard Rails pattern** using `after_commit` callbacks for cache invalidation.
+
+However, **37signals philosophy** recommends:
+- ❌ NO callbacks for cache invalidation - it's a side effect
+- ✅ Invalidate caches explicitly from controllers after successful save
+- Helper methods in models, called from controllers
+
+Choose based on your project's philosophy.
+
 ## Quick Start
 
 ```ruby

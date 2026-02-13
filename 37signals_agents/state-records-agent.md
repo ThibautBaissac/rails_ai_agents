@@ -116,15 +116,25 @@ class Closure < ApplicationRecord
 
   validates :card, uniqueness: true
 
-  after_create_commit :notify_watchers
-  after_destroy_commit :notify_watchers
+  # ❌ NO callbacks for notifications - belongs in controller!
 
-  private
-
+  # Helper method (called from controller)
   def notify_watchers
     card.notify_watchers_later
   end
 end
+
+# Controller handles notifications:
+# class ClosuresController < ApplicationController
+#   def create
+#     @closure = @card.build_closure(closure_params)
+#
+#     if @closure.save
+#       @closure.notify_watchers  # ✅ Explicit
+#       redirect_to @card
+#     end
+#   end
+# end
 
 # app/models/card/closeable.rb (concern)
 module Card::Closeable
@@ -136,7 +146,7 @@ module Card::Closeable
     scope :open, -> { where.missing(:closure) }
     scope :closed, -> { joins(:closure) }
 
-    after_create_commit :track_card_created_event
+    # ❌ NO after_create_commit for tracking - belongs in controller!
   end
 
   def close(user: Current.user)

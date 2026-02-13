@@ -48,7 +48,8 @@ module Card::Closeable
     scope :open, -> { where.missing(:closure) }
     scope :closed, -> { joins(:closure) }
 
-    after_create_commit :track_card_created_event
+    # ❌ NO after_create_commit for tracking - belongs in controller!
+    # Controller should call: @card.track_event("card_created")
   end
 
   def close(user: Current.user)

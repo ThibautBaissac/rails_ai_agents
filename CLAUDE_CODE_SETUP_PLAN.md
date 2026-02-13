@@ -899,9 +899,13 @@ class ModelName < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
   scope :published, -> { where(status: :published) }
 
-  # Callbacks (use sparingly)
+  # Callbacks (use sparingly - ONLY for data normalization)
   before_validation :normalize_email, on: :create
-  after_create_commit :notify_admin
+
+  # ❌ NO callbacks for side effects!
+  # NO after_create_commit :notify_admin
+  # NO after_save :send_notifications
+  # Put these in the CONTROLLER after successful save
 
   # Class methods
   def self.search(query)
@@ -917,10 +921,6 @@ class ModelName < ApplicationRecord
 
   def normalize_email
     self.email = email.downcase.strip if email.present?
-  end
-
-  def notify_admin
-    AdminMailer.new_record(self).deliver_later
   end
 end
 ```

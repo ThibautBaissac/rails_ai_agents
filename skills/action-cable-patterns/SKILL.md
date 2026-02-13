@@ -15,6 +15,20 @@ Action Cable integrates WebSockets with Rails:
 - Live dashboards and feeds
 - Collaborative editing
 
+**⚠️ IMPORTANT - Broadcasting Philosophy:**
+
+This skill shows the **standard Rails/Action Cable pattern** using `after_create_commit` callbacks for broadcasting.
+
+However, **37signals philosophy** (see `37signals_agents/`) recommends:
+- ❌ NO callbacks for broadcasting - it's a side effect
+- ✅ Broadcast explicitly from controllers after successful save
+- Helper methods in models, called from controllers
+
+Choose based on your project's philosophy:
+- Standard Rails agents: Use controller-based broadcasting
+- 37signals agents: Use controller-based broadcasting
+- General Rails pattern: Can use callbacks (shown in examples below)
+
 ## Quick Start
 
 Action Cable is included in Rails by default. Configure it:

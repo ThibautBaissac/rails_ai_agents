@@ -610,24 +610,32 @@ end
 class Card < ApplicationRecord
   belongs_to :board, touch: true
 
-  after_create_commit :clear_board_caches
-  after_destroy_commit :clear_board_caches
+  # ❌ NO callbacks for cache clearing - belongs in controller!
 
-  private
-
+  # Helper method (called from controller)
   def clear_board_caches
     Rails.cache.delete([board, "statistics"])
     Rails.cache.delete([board, "card_distribution"])
   end
 end
 
+# Controller handles cache invalidation:
+# class CardsController < ApplicationController
+#   def create
+#     @card = @board.cards.build(card_params)
+#
+#     if @card.save
+#       @card.clear_board_caches  # ✅ Explicit
+#       redirect_to @card
+#     end
+#   end
+# end
+
 # app/models/concerns/cacheable.rb
 module Cacheable
   extend ActiveSupport::Concern
 
-  included do
-    after_commit :clear_associated_caches
-  end
+  # ❌ NO after_commit for cache clearing
 
   def clear_associated_caches
     # Override in models

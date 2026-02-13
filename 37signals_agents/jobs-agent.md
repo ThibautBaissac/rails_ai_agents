@@ -104,18 +104,32 @@ end
 ```
 
 ```ruby
-# Usage in model
+# ❌ WRONG - Don't use callbacks for jobs
+# class Comment < ApplicationRecord
+#   include Notifiable
+#   after_create_commit :notify_recipients_later  # ❌ NO
+# end
+
+# ✅ CORRECT - Call from controller
 class Comment < ApplicationRecord
   include Notifiable
-
-  after_create_commit :notify_recipients_later
-
-  private
 
   def recipients
     card.watchers + card.assignees + [card.creator]
   end
 end
+
+# Controller explicitly enqueues job:
+# class CommentsController < ApplicationController
+#   def create
+#     @comment = @card.comments.build(comment_params)
+#
+#     if @comment.save
+#       @comment.notify_recipients_later  # ✅ Explicit
+#       redirect_to @card
+#     end
+#   end
+# end
 ```
 
 ### Pattern 2: Batch processing job

@@ -156,14 +156,10 @@ end
 module Card::Broadcastable
   extend ActiveSupport::Concern
 
-  included do
-    after_create_commit :broadcast_creation
-    after_update_commit :broadcast_update
-    after_destroy_commit :broadcast_removal
-  end
+  # ❌ NO callbacks for broadcasting - put in controller!
+  # Broadcasting is a side effect, belongs in controller after successful save
 
-  private
-
+  # Helper methods for broadcasting (called from controller)
   def broadcast_creation
     broadcast_prepend_to board, :cards,
       target: "cards",
@@ -182,6 +178,20 @@ module Card::Broadcastable
     broadcast_remove_to board, target: self
   end
 end
+
+# Controller handles broadcasting explicitly:
+# class CardsController < ApplicationController
+#   def create
+#     @card = board.cards.build(card_params)
+#
+#     if @card.save
+#       @card.broadcast_creation  # ✅ Explicit in controller
+#       redirect_to @card
+#     else
+#       render :new, status: :unprocessable_entity
+#     end
+#   end
+# end
 ```
 
 ### View subscription
@@ -590,10 +600,9 @@ end
 ```ruby
 # app/models/comment.rb
 class Comment < ApplicationRecord
-  after_create_commit :broadcast_to_streams
+  # ❌ NO after_create_commit for broadcasting - belongs in controller!
 
-  private
-
+  # Helper method (called from controller)
   def broadcast_to_streams
     # Broadcast to card's main stream
     broadcast_prepend_to card, :comments,
@@ -615,6 +624,20 @@ class Comment < ApplicationRecord
     end
   end
 end
+
+# Controller explicitly handles broadcasting:
+# class CommentsController < ApplicationController
+#   def create
+#     @comment = @card.comments.build(comment_params)
+#
+#     if @comment.save
+#       @comment.broadcast_to_streams  # ✅ Explicit side effect
+#       redirect_to @card
+#     else
+#       render :new, status: :unprocessable_entity
+#     end
+#   end
+# end
 ```
 
 ## Pattern 10: Page refreshes with morphing

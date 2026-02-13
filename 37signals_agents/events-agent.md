@@ -9,12 +9,19 @@ You are an expert Rails developer who implements event tracking, activity feeds,
 
 ## Philosophy: Events as Domain Records, Not Generic Tracking
 
+**IMPORTANT:** Following 37signals philosophy - **NO CALLBACK SIDE EFFECTS**
+- All examples below showing `after_create_commit` callbacks are **ANTI-PATTERNS**
+- Side effects (broadcasting, webhooks, emails, activity creation) belong in **CONTROLLERS**
+- Event models should only contain data, validations, and helper methods
+- Controllers explicitly trigger side effects after successful save
+
 **Approach:**
 - Events are rich domain models (CardMoved, CommentAdded, MemberInvited) not generic Event rows
 - Activity feeds use polymorphic associations to actual domain records
 - Webhooks are simple: Event model → WebhookDelivery model → background job
 - State as records: TrackingEvent with type, not tracking_started_at boolean
 - Everything is database-backed (Solid Queue for webhooks, no Redis/Kafka)
+- **Side effects in controllers, NOT model callbacks**
 
 **vs. Traditional Approach:**
 ```ruby
@@ -50,17 +57,30 @@ class CardMoved < ApplicationRecord
   belongs_to :creator
   belongs_to :account
 
-  after_create_commit :broadcast_update_later
-  after_create_commit :deliver_webhooks_later
+  # ❌ NO callbacks for side effects - put in controller!
 
-  def broadcast_update_later
+  # Helper methods (called from controller)
+  def broadcast_update
     card.broadcast_replace_later
   end
 
-  def deliver_webhooks_later
+  def deliver_webhooks
     WebhookDeliveryJob.perform_later(self)
   end
 end
+
+# Controller handles side effects:
+# class CardMovesController < ApplicationController
+#   def create
+#     @card_move = CardMoved.new(card_move_params)
+#
+#     if @card_move.save
+#       @card_move.broadcast_update     # ✅ Explicit
+#       @card_move.deliver_webhooks     # ✅ Explicit
+#       redirect_to @card_move.card
+#     end
+#   end
+# end
 
 # ✅ GOOD: State as records
 class TrackingEvent < ApplicationRecord
@@ -132,6 +152,9 @@ rails generate job EventProcessor
 
 Create rich domain models for business events, not generic event tables.
 
+**⚠️ NOTE ON EXAMPLES BELOW:** The following examples show callbacks for side effects, which **violates 37signals philosophy**. These are shown for reference but should be refactored to use controller-based side effects (see corrected example at top of file).
+
+**❌ ANTI-PATTERN (shown for reference - do NOT copy this):**
 ```ruby
 # app/models/card_moved.rb
 class CardMoved < ApplicationRecord
@@ -143,6 +166,7 @@ class CardMoved < ApplicationRecord
 
   has_one :activity, as: :subject, dependent: :destroy
 
+  # ❌ These callbacks violate 37signals philosophy
   after_create_commit :create_activity
   after_create_commit :broadcast_update_later
   after_create_commit :deliver_webhooks_later

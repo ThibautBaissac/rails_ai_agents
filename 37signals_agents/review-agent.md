@@ -846,22 +846,42 @@ def send_notification
 end
 ```
 
-**Issue:** Email delivery blocks request cycle.
+**Issue:** Side effects in model callbacks - violates explicit controller pattern.
 
 **Fix:**
 ```ruby
-after_create_commit :send_notification
+# Model - NO callbacks for side effects
+class Archival < ApplicationRecord
+  belongs_to :card, touch: true
+  belongs_to :user
 
-def send_notification
-  ArchivalMailer.archived(card).deliver_later
+  # ❌ NO after_create, after_save, or after_commit for side effects!
+end
+
+# Controller - Handle side effects explicitly AFTER successful save
+class ArchivalsController < ApplicationController
+  def create
+    @archival = Archival.new(archival_params)
+
+    if @archival.save
+      # ✅ Side effects happen here in controller, after transaction commit
+      ArchivalMailer.archived(@archival.card).deliver_later
+
+      redirect_to @archival.card, notice: "Card archived"
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
 end
 ```
 
 **Why:**
-- deliver_later uses background job (non-blocking)
-- after_create_commit ensures transaction completes first
+- Side effects are explicit and visible in controller
+- Clear transaction boundaries (side effects after commit)
+- Easier to test without triggering emails
+- Can be skipped when needed (bulk operations)
 
-**Reference:** rails_style_guide.md#background-jobs
+**Reference:** rails_style_guide.md#no-callback-side-effects
 
 ---
 

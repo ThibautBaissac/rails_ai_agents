@@ -660,12 +660,13 @@ class WeeklyDigestJob < ApplicationJob
 end
 ```
 
-### With Callbacks (avoid if possible)
+### ❌ NEVER Use Callbacks for Emails
 
 ```ruby
+# ❌ ANTI-PATTERN - DO NOT DO THIS
 # app/models/submission.rb
 class Submission < ApplicationRecord
-  after_create_commit :notify_owner
+  after_create_commit :notify_owner  # ❌ NEVER
 
   private
 
@@ -673,6 +674,30 @@ class Submission < ApplicationRecord
     SubmissionMailer.new_submission(self).deliver_later
   end
 end
+
+# ✅ CORRECT - Handle in controller
+class Submission < ApplicationRecord
+  # NO callbacks for emails!
+
+  # Helper method (called from controller)
+  def notify_owner
+    SubmissionMailer.new_submission(self).deliver_later
+  end
+end
+
+# Controller handles email side effect:
+# class SubmissionsController < ApplicationController
+#   def create
+#     @submission = Submission.new(submission_params)
+#
+#     if @submission.save
+#       @submission.notify_owner  # ✅ Explicit
+#       redirect_to @submission
+#     else
+#       render :new, status: :unprocessable_entity
+#     end
+#   end
+# end
 ```
 
 ## Configuration

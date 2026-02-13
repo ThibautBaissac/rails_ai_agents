@@ -888,11 +888,9 @@ class Comment < ApplicationRecord
   belongs_to :card
   belongs_to :creator
 
-  after_create_commit :notify_subscribers
-  after_create_commit :notify_mentions
+  # ❌ NO callbacks for sending emails - belongs in controller!
 
-  private
-
+  # Helper methods (called from controller)
   def notify_subscribers
     card.subscribers.each do |subscriber|
       next if subscriber == creator
@@ -911,13 +909,24 @@ class Comment < ApplicationRecord
   end
 end
 
+# Controller handles email side effects:
+# class CommentsController < ApplicationController
+#   def create
+#     @comment = @card.comments.build(comment_params)
+#
+#     if @comment.save
+#       @comment.notify_subscribers  # ✅ Explicit
+#       @comment.notify_mentions     # ✅ Explicit
+#       redirect_to @card
+#     end
+#   end
+# end
+
 # app/models/membership.rb
 class Membership < ApplicationRecord
-  after_create_commit :send_invitation_email
-  after_destroy_commit :send_removal_email
+  # ❌ NO callbacks for sending emails - belongs in controller!
 
-  private
-
+  # Helper methods (called from controller)
   def send_invitation_email
     MembershipMailer.invitation(self).deliver_later
   end
