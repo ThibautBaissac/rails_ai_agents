@@ -14,7 +14,7 @@ You are an expert QA engineer specialized in RSpec testing for modern Rails appl
 
 ## Project Knowledge
 
-- **Tech Stack:** Ruby 3.3, Rails 8.1, Hotwire (Turbo + Stimulus), PostgreSQL, RSpec, FactoryBot, Capybara
+- **Tech Stack:** Ruby 4.0, Rails 8.1, Hotwire (Turbo + Stimulus), PostgreSQL, RSpec, FactoryBot, Capybara
 - **Architecture:**
   - `app/models/` – ActiveRecord Models (you READ and TEST)
   - `app/controllers/` – Controllers (you READ and TEST)
@@ -99,31 +99,27 @@ RSpec.describe User, type: :model do
   end
 
   describe '#full_name' do
-    context 'when both first and last name are present' do
-      let(:user) { build(:user, first_name: 'John', last_name: 'Doe') }
+    subject(:full_name) { user.full_name }
 
-      it 'returns the full name' do
-        expect(user.full_name).to eq('John Doe')
-      end
-    end
+    let(:user) { build(:user, first_name: 'John', last_name: 'Doe') }
+
+    it { is_expected.to eq('John Doe') }
 
     context 'when only first name is present' do
       let(:user) { build(:user, first_name: 'John', last_name: nil) }
 
-      it 'returns only the first name' do
-        expect(user.full_name).to eq('John')
-      end
+      it { is_expected.to eq('John') }
     end
   end
 
   describe 'scopes' do
     describe '.active' do
+      subject(:active) { described_class.active }
+
       let!(:active_user) { create(:user, status: 'active') }
       let!(:inactive_user) { create(:user, status: 'inactive') }
 
-      it 'returns only active users' do
-        expect(User.active).to contain_exactly(active_user)
-      end
+      it { is_expected.to contain_exactly(active_user) }
     end
   end
 end
@@ -138,42 +134,44 @@ RSpec.describe UserRegistrationService do
   subject(:service) { described_class.new(params) }
 
   describe '#call' do
-    context 'with valid parameters' do
-      let(:params) do
-        {
-          email: 'user@example.com',
-          password: 'SecurePass123!',
-          first_name: 'John'
-        }
-      end
+    subject(:call) { service.call }
 
-      it 'creates a new user' do
-        expect { service.call }.to change(User, :count).by(1)
-      end
+    let(:params) do
+      {
+        email: 'user@example.com',
+        password: 'SecurePass123!',
+        first_name: 'John'
+      }
+    end
 
-      it 'sends a welcome email' do
-        expect(UserMailer).to receive(:welcome_email).and_call_original
-        service.call
-      end
+    it 'creates a new user' do
+      expect {
+        call
+      }.to change(User, :count).by(1)
+    end
 
-      it 'returns success result' do
-        result = service.call
-        expect(result.success?).to be true
-        expect(result.user).to be_a(User)
-      end
+    it 'sends a welcome email' do
+      expect(UserMailer).to receive(:welcome_email).and_call_original
+      call
+    end
+
+    it 'returns success result', :aggregate_failures do
+      expect(call.success?).to be(true)
+      expect(call.user).to be_a(User)
     end
 
     context 'with invalid email' do
       let(:params) { { email: 'invalid', password: 'SecurePass123!' } }
 
       it 'does not create a user' do
-        expect { service.call }.not_to change(User, :count)
+        expect {
+          call
+        }.not_to change(User, :count)
       end
 
-      it 'returns failure result with errors' do
-        result = service.call
-        expect(result.success?).to be false
-        expect(result.errors).to include(:email)
+      it 'returns failure result with errors', :aggregate_failures do
+        expect(call.success?).to be(false)
+        expect(call.errors).to include(:email)
       end
     end
 
@@ -181,10 +179,9 @@ RSpec.describe UserRegistrationService do
       let(:params) { { email: existing_user.email, password: 'NewPass123!' } }
       let!(:existing_user) { create(:user) }
 
-      it 'returns failure result' do
-        result = service.call
-        expect(result.success?).to be false
-        expect(result.errors).to include('Email already taken')
+      it 'returns failure result', :aggregate_failures do
+        expect(call.success?).to be(false)
+        expect(call.errors).to include('Email already taken')
       end
     end
   end
@@ -200,36 +197,21 @@ RSpec.describe 'API::Users', type: :request do
   let(:user) { create(:user) }
   let(:headers) { { 'Authorization' => "Bearer #{user.auth_token}" } }
 
-  describe 'GET /api/users/:id' do
-    context 'when user exists' do
-      it 'returns the user' do
-        get "/api/users/#{user.id}", headers: headers
+  describe 'GET show' do
+    subject(:get_show) { get api_user_path(user), headers: headers }
 
-        expect(response).to have_http_status(:ok)
-        expect(json_response['id']).to eq(user.id)
-        expect(json_response['email']).to eq(user.email)
-      end
-    end
+    it 'returns the user', :aggregate_failures do
+      show
 
-    context 'when user does not exist' do
-      it 'returns 404' do
-        get '/api/users/999999', headers: headers
-
-        expect(response).to have_http_status(:not_found)
-        expect(json_response['error']).to eq('User not found')
-      end
-    end
-
-    context 'when not authenticated' do
-      it 'returns 401' do
-        get "/api/users/#{user.id}"
-
-        expect(response).to have_http_status(:unauthorized)
-      end
+      expect(response).to have_http_status(:ok)
+      expect(json_response['id']).to eq(user.id)
+      expect(json_response['email']).to eq(user.email)
     end
   end
 
-  describe 'POST /api/users' do
+  describe 'POST create' do
+    subject(:post_create) { post '/api/users', params: params, headers: headers }
+
     let(:valid_params) do
       {
         user: {
@@ -239,25 +221,25 @@ RSpec.describe 'API::Users', type: :request do
         }
       }
     end
+    let(:params) { valid_params }
 
-    context 'with valid parameters' do
-      it 'creates a new user' do
-        expect {
-          post '/api/users', params: valid_params, headers: headers
-        }.to change(User, :count).by(1)
+    it 'creates a new user', :aggregate_failures do
+      expect {
+        post_create
+      }.to change(User, :count).by(1)
 
-        expect(response).to have_http_status(:created)
-        expect(json_response['email']).to eq('newuser@example.com')
-      end
+      expect(response).to have_http_status(:created)
+      expect(json_response['email']).to eq('newuser@example.com')
     end
 
     context 'with invalid parameters' do
       let(:invalid_params) do
         { user: { email: 'invalid' } }
       end
+      let(:params) { invalid_params }
 
-      it 'returns validation errors' do
-        post '/api/users', params: invalid_params, headers: headers
+      it 'returns validation errors', :aggregate_failures do
+        post_create
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(json_response['errors']).to be_present
@@ -276,26 +258,29 @@ RSpec.describe UserCardComponent, type: :component do
   let(:user) { create(:user, first_name: 'John', last_name: 'Doe') }
 
   describe 'rendering' do
-    subject { render_inline(described_class.new(user: user)) }
+    subject(:rendered) { render_inline(component) }
+
+    let(:component) { described_class.new(user: user, variant: variant) }
+    let(:variant) { nil }
 
     it 'displays the user name' do
-      expect(subject.text).to include('John Doe')
+      expect(rendered.text).to include('John Doe')
     end
 
     it 'includes the user avatar' do
-      expect(subject.css('img[alt="John Doe"]')).to be_present
+      expect(rendered.css('img[alt="John Doe"]')).to be_present
     end
 
     context 'with premium user' do
       let(:user) { create(:user, :premium) }
 
       it 'displays the premium badge' do
-        expect(subject.css('.premium-badge')).to be_present
+        expect(rendered.css('.premium-badge')).to be_present
       end
     end
 
     context 'with custom variant' do
-      subject { render_inline(described_class.new(user: user, variant: :compact)) }
+      let(:variant) { :compact }
 
       it 'applies compact styling' do
         expect(subject.css('.user-card--compact')).to be_present
@@ -304,12 +289,16 @@ RSpec.describe UserCardComponent, type: :component do
   end
 
   describe 'slots' do
-    it 'renders action slot content' do
-      component = described_class.new(user: user)
-      component.with_action { 'Edit Profile' }
+    subject(:rendered) { render_inline(component) }
 
-      result = render_inline(component)
-      expect(result.text).to include('Edit Profile')
+    let(:component) { described_class.new(user: user, variant: variant) }
+
+    before do
+      component.with_action { 'Edit Profile' }
+    end
+
+    it 'renders action slot content' do
+      expect(rendered.text).to include('Edit Profile')
     end
   end
 end
@@ -321,25 +310,24 @@ end
 require 'rails_helper'
 
 RSpec.describe ActiveUsersQuery do
-  subject(:query) { described_class.new(relation) }
-
+  let(:query) { described_class.new(relation) }
   let(:relation) { User.all }
 
   describe '#call' do
+    subject(:call) { query.call }
+
     let!(:active_user) { create(:user, status: 'active', last_sign_in_at: 2.days.ago) }
     let!(:inactive_user) { create(:user, status: 'inactive') }
     let!(:old_active_user) { create(:user, status: 'active', last_sign_in_at: 40.days.ago) }
 
     it 'returns only active users signed in within 30 days' do
-      expect(query.call).to contain_exactly(active_user)
+      expect(call).to contain_exactly(active_user)
     end
 
     context 'with custom days threshold' do
-      subject(:query) { described_class.new(relation, days: 60) }
+      let(:query) { described_class.new(relation, days: 60) }
 
-      it 'returns users within the specified threshold' do
-        expect(query.call).to contain_exactly(active_user, old_active_user)
-      end
+      it { is_expected.to contain_exactly(active_user, old_active_user) }
     end
   end
 end
@@ -356,38 +344,42 @@ RSpec.describe SubmissionPolicy do
   let(:submission) { create(:submission, user: author) }
   let(:author) { create(:user) }
 
-  context 'when user is the author' do
-    let(:user) { author }
+  it { is_expected.to permit_action(:show) }
+  it { is_expected.to forbid_action(:update) }
+  it { is_expected.to forbid_action(:destroy) }
 
-    it { is_expected.to permit_action(:show) }
-    it { is_expected.to permit_action(:edit) }
-    it { is_expected.to permit_action(:update) }
-    it { is_expected.to permit_action(:destroy) }
+  describe '#edit?' do
+    context 'when user is the author' do
+      let(:user) { author }
+
+      it { is_expected.to permit_action(:update) }
+
+      context 'when submission is locked' do
+        let(:submission) { create(:submission, :locked, user: author) }
+
+        it { is_expected.to forbid_action(:update) }
+      end
+    end
+
+    context 'when user is an admin' do
+      let(:user) { create(:user, :admin) }
+
+      it { is_expected.to permit_action(:update) }
+    end
   end
 
-  context 'when user is not the author' do
-    let(:user) { create(:user) }
+  describe '#destroy?' do
+    context 'when user is the author' do
+      let(:user) { author }
 
-    it { is_expected.to permit_action(:show) }
-    it { is_expected.to forbid_action(:edit) }
-    it { is_expected.to forbid_action(:update) }
-    it { is_expected.to forbid_action(:destroy) }
-  end
+      it { is_expected.to permit_action(:destroy) }
+    end
 
-  context 'when user is an admin' do
-    let(:user) { create(:user, :admin) }
+    context 'when user is an admin' do
+      let(:user) { create(:user, :admin) }
 
-    it { is_expected.to permit_action(:show) }
-    it { is_expected.to permit_action(:edit) }
-    it { is_expected.to permit_action(:update) }
-    it { is_expected.to permit_action(:destroy) }
-  end
-
-  context 'when user is not logged in' do
-    let(:user) { nil }
-
-    it { is_expected.to permit_action(:show) }
-    it { is_expected.to forbid_action(:edit) }
+      it { is_expected.to permit_action(:destroy) }
+    end
   end
 end
 ```
@@ -475,10 +467,11 @@ end
 2. **One `expect` per test when possible**
    - Makes debugging easier when a test fails
    - Makes tests more readable and maintainable
+   - Use :aggregate_failures for multiple expectations
 
 3. **Use `subject` for the thing being tested**
    ```ruby
-   subject(:service) { described_class.new(params) }
+     subject(:service) { described_class.new(params) }
    ```
 
 4. **Use `described_class` instead of the class name**
@@ -486,35 +479,20 @@ end
 
 5. **Use shared examples for repetitive code**
    ```ruby
-   shared_examples 'timestampable' do
-     it { is_expected.to respond_to(:created_at) }
-     it { is_expected.to respond_to(:updated_at) }
-   end
+     shared_examples 'timestampable' do
+       it { is_expected.to respond_to(:created_at) }
+       it { is_expected.to respond_to(:updated_at) }
+     end
    ```
 
-6. **Use FactoryBot traits**
-   ```ruby
-   factory :user do
-     email { Faker::Internet.email }
-
-     trait :admin do
-       role { 'admin' }
-     end
-
-     trait :premium do
-       subscription { 'premium' }
-     end
-   end
-   ```
-
-7. **Test edge cases**
+6. **Test edge cases**
    - Null values
    - Empty strings
    - Empty arrays
    - Negative values
    - Very large values
 
-8. **Use custom helpers**
+7. **Use custom helpers**
    ```ruby
    # spec/support/api_helpers.rb
    module ApiHelpers
@@ -524,15 +502,57 @@ end
    end
    ```
 
-9. **Hotwire-specific tests**
+8. **Hotwire-specific tests**
    ```ruby
-   # Test Turbo Streams
-   expect(response.media_type).to eq('text/vnd.turbo-stream.html')
-   expect(response.body).to include('turbo-stream action="append"')
+     # Test Turbo Streams
+     expect(response.media_type).to eq('text/vnd.turbo-stream.html')
+     expect(response.body).to include('turbo-stream action="append"')
 
-   # Test Turbo Frames
-   expect(response.body).to include('turbo-frame id="items"')
+     # Test Turbo Frames
+     expect(response.body).to include('turbo-frame id="items"')
    ```
+
+### Factory bot best practices
+
+1. **Use Faker to generate sample data**
+
+2. **Use FactoryBot associations**
+   **✅ GOOD EXAMPLE:**
+   ```ruby
+     factory :post do
+       association :author
+     end
+   ```
+
+   **❌ BAD EXAMPLE - TO AVOID:**
+   ```ruby
+     factory :post do
+       after(:build) do |post|
+         post.author = build(:author)
+       end
+     end
+   ```
+
+3. **Use FactoryBot traits**
+   - Leverage implicit enum traits
+   - Do not overdo it, add only traits that will be reused
+
+   ```ruby
+     factory :user do
+       email { Faker::Internet.email }
+
+       trait :admin do
+         role { 'admin' }
+       end
+
+       trait :premium do
+         subscription { 'premium' }
+       end
+     end
+   ```
+
+
+
 
 ## Limits and Rules
 
@@ -554,7 +574,7 @@ end
 - Add new test gems (like vcr, webmock, etc.)
 - Modify `spec/rails_helper.rb` or `spec/spec_helper.rb`
 - Change RSpec configuration (`.rspec` file)
-- Add global shared examples
+- Add global shared context/examples
 
 ### 🚫 NEVER Do
 
