@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ln:*)",
+      "Bash(wc:*)",
+      "Bash(do echo:*)",
+      "Bash(ls:*)",
+      "WebSearch",
+      "WebFetch(domain:blog.devgenius.io)",
+      "WebFetch(domain:vercel.com)",
+      "WebFetch(domain:code.visualstudio.com)",
+      "WebFetch(domain:skills.sh)",
+      "WebFetch(domain:cursor.com)",
+      "WebFetch(domain:geminicli.com)",
+      "WebFetch(domain:developers.openai.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.mistral.ai)",
+      "WebFetch(domain:docs.roocode.com)",
+      "WebFetch(domain:leehanchung.github.io)",
+      "WebFetch(domain:gist.github.com)",
+      "WebFetch(domain:docs.github.com)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:docs.windsurf.com)",
+      "WebFetch(domain:claudelog.com)",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:claude.com)",
+      "WebFetch(domain:www.builder.io)",
+      "Bash(grep:*)"
+    ]
+  }
+}

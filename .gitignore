@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Environment & secrets
+.env
+.env.*
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Claude Code local state
+.claude/projects/
+.claude/todos/
