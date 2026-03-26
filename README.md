@@ -3,7 +3,7 @@
 A production-ready Claude Code setup for Ruby on Rails development: **18 specialized agents**, **17 skills**, **10 path-scoped rules**, and **5 lifecycle hooks**. Drop it into your project and your AI assistant instantly knows Rails conventions, TDD workflows, and production patterns.
 
 Also includes:
-- separate [37signals-style collection](#37signals-collection) (18 skills).
+- separate [37signals-style collection](#37signals-collection).
 - Claude Code Extensibility Guide
 - AI Terminology Glossary — 289 terms across 25 categories. Also available as a [browsable HTML version](https://thibautbaissac.github.io/ai/glossary.html).
 
@@ -152,18 +152,6 @@ You can also invoke skills directly:
 claude-code-extensibility-guide.md  # Comprehensive extensibility reference
 glossary.md                  # AI terminology glossary
 ```
-
-## 37signals Collection
-
-The `37signals_skills/` directory contains 18 skills following the Basecamp/HEY philosophy:
-
-| | Main collection | 37signals |
-|---|---|---|
-| Business logic | Service objects | Fat models |
-| Tests | RSpec + FactoryBot | Minitest + fixtures |
-| Shared behavior | Separate layers | Concerns everywhere |
-| Request context | Explicit params | `Current` attributes |
-| State | Enums / booleans | State as records |
 
 ## Extensibility Guide
 

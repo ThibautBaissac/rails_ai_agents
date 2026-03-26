@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"Project: $(basename $(git rev-parse --show-toplevel 2>/dev/null || pwd)) | Branch: $(git branch --show-current 2>/dev/null || echo 'N/A') | Ruby: $(ruby -v 2>/dev/null | cut -d' ' -f2 || echo 'N/A') | Rails: $(bundle exec rails -v 2>/dev/null | cut -d' ' -f2 || echo 'N/A') | Pending migrations: $(bin/rails db:migrate:status 2>/dev/null | grep -c 'down' || echo '0')\"",
+            "timeout": 15,
+            "statusMessage": "Loading project context..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(cat | jq -r '.tool_input.file_path // empty') && [ -n \"$FILE\" ] && [[ \"$FILE\" == *.rb ]] && bundle exec rubocop -a \"$FILE\" > /dev/null 2>&1 || true",
+            "timeout": 30,
+            "statusMessage": "Auto-formatting with RuboCop..."
+          },
+          {
+            "type": "command",
+            "command": "FILE=$(cat | jq -r '.tool_input.file_path // empty') && [ -n \"$FILE\" ] && [[ \"$FILE\" == *.erb ]] && bundle exec erblint --autocorrect \"$FILE\" > /dev/null 2>&1 || true",
+            "timeout": 30,
+            "statusMessage": "Auto-formatting ERB..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CMD=$(cat | jq -r '.tool_input.command // empty') && if echo \"$CMD\" | grep -qiE '(rm\\s+-rf\\s+[/~]|DROP\\s+TABLE|DROP\\s+DATABASE|git\\s+push\\s+.*(-f|--force)\\s+.*(main|master|production)|git\\s+reset\\s+--hard|chmod\\s+777)'; then echo 'Blocked: This command is potentially destructive.' >&2; exit 2; fi",
+            "timeout": 5,
+            "statusMessage": "Checking command safety..."
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "TASK=$(cat | jq -r '.task.description // empty') && if echo \"$TASK\" | grep -qiE '(implement|create|add|build|write|fix|refactor|update|migrate|change)'; then echo '{\"systemMessage\": \"Before marking complete: verify tests pass (bin/rails test) and linting is clean (bundle exec rubocop). If you have not run these checks, do so now.\"}'; fi",
+            "timeout": 5,
+            "statusMessage": "Checking task completion quality..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude has finished responding\" with title \"Claude Code\"' 2>/dev/null || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
