@@ -25,7 +25,7 @@ The SDD toolkit is an 8-command pipeline built on spec-kit:
 
 ---
 
-## Enhancement 1: LessonsLearned.md Feedback Loop
+## Enhancement 1: LessonsLearned.md Feedback Loop [DONE]
 
 **Priority**: 1 (Low effort, High impact -- compounds across every feature)
 
@@ -174,7 +174,7 @@ The SDD toolkit is an 8-command pipeline built on spec-kit:
 
 ---
 
-## Enhancement 4: Fresh Context Per Task in Implement
+## Enhancement 4: Fresh Context Per Task in Implement [DONE]
 
 **Priority**: 4 (Medium effort, High impact -- prevents quality degradation)
 
