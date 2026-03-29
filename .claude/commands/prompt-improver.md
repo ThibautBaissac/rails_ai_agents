@@ -1,19 +1,8 @@
 ---
 name: prompt-improver
 description: >-
-  Transforms vague or unstructured prompts into specific, actionable Claude Code
-  prompts with clear objectives, constraints, and verification steps. Use when the
-  user has a rough idea and wants a better prompt before running it, wants to optimize
-  prompt quality, or mentions prompt improvement or prompt rewriting. WHEN NOT:
-  Actually executing the improved prompt, writing CLAUDE.md instructions, or creating
-  skills or agents.
-disable-model-invocation: true
-user-invocable: true
+  Transforms vague or unstructured prompts into specific, actionable Claude Code prompts with clear objectives, constraints, and verification steps. Use when the user has a rough idea and wants a better prompt before running it, wants to optimize prompt quality, or mentions prompt improvement or prompt rewriting. WHEN NOT: Actually executing the improved prompt, writing CLAUDE.md instructions, or creating skills or agents.
 argument-hint: "[your draft prompt]"
-license: MIT
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
 ---
 
 # Prompt Improver

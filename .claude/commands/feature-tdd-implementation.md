@@ -1,5 +1,5 @@
 ---
-name: tdd-cycle
+name: feature-tdd-implementation
 description: >-
   Guides Test-Driven Development workflow with Red-Green-Refactor cycle.
   Use when the user wants to implement a feature using TDD, write tests first,
@@ -31,14 +31,13 @@ See `references/testing-patterns.md` for code examples, common patterns, and ant
 
 ## Workflow Steps
 
-1. **Requirement Analysis** -- Clarify expected input, output, edge cases, and error handling before writing code. Ask questions if requirements are ambiguous.
-2. **Choose Test Type** -- Pick the appropriate spec type from the table above based on what you are testing.
-3. **Write Failing Spec (RED)** -- Write a spec that describes the desired behavior. Follow the structure template in the references file.
-4. **Verify Failure** -- Run `bundle exec rspec path/to/spec.rb --format documentation`. The spec must fail with a clear message. If it passes immediately, either the behavior already exists or the spec is wrong.
-5. **Implement Minimal Code (GREEN)** -- Write the minimum code to make the spec pass. No optimization, no extra edge-case handling, no refactoring yet.
-6. **Verify Pass** -- Run the spec again. It must pass. If it fails, read the error, fix the implementation (not the spec unless it was wrong), and re-run.
-7. **Refactor** -- Improve the code one change at a time: extract methods, improve naming, remove duplication, simplify logic. Run specs after each change. Undo if specs fail.
-8. **Final Verification** -- Run all related specs. All must pass. If any fail, undo recent changes and try a different approach.
+1. **Choose Test Type** -- Pick the appropriate spec type from the table above based on what you are testing.
+2. **Write Failing Spec (RED)** -- Write a spec that describes the desired behavior. Follow the structure template in the references file.
+3. **Verify Failure** -- Run `bundle exec rspec path/to/spec.rb --format documentation`. The spec must fail with a clear message. If it passes immediately, either the behavior already exists or the spec is wrong.
+4. **Implement Minimal Code (GREEN)** -- Write the minimum code to make the spec pass. No optimization, no extra edge-case handling, no refactoring yet.
+5. **Verify Pass** -- Run the spec again. It must pass. If it fails, read the error, fix the implementation (not the spec unless it was wrong), and re-run.
+6. **Refactor** -- Improve the code one change at a time: extract methods, improve naming, remove duplication, simplify logic. Run specs after each change. Undo if specs fail.
+7. **Final Verification** -- Run all related specs. All must pass. If any fail, undo recent changes and try a different approach.
 
 ## Good Spec Characteristics
 
@@ -61,9 +60,3 @@ See `references/testing-patterns.md` for code examples, common patterns, and ant
 2. Run specs after EACH change
 3. If specs fail, undo and try a different approach
 4. Stop when code is clean -- do not over-engineer
-
-## Detailed Reference
-
-For spec structure templates, common testing patterns (validations, associations, scopes,
-service objects), anti-patterns to avoid, and the workflow checklist, see:
-`references/testing-patterns.md`

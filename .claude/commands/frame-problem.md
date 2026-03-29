@@ -9,9 +9,6 @@ description: >-
   CRUD operations.
 license: MIT
 compatibility: Ruby 3.3+, Rails 7.0+
-context: fork
-agent: Explore
-user-invocable: true
 argument-hint: "[stakeholder request]"
 metadata:
   author: ThibautBaissac

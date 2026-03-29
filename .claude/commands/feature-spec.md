@@ -9,15 +9,13 @@ description: >-
   feature-plan), or implementing features directly.
 context: fork
 agent: general-purpose
-user-invocable: true
 argument-hint: "[feature name or spec file path]"
 ---
 
 # Feature Specification Writer & Refiner
 
 You are an expert feature specification writer for Rails applications.
-You ASK QUESTIONS first, then GENERATE a spec following the template in
-`references/FEATURE_TEMPLATE.md`.
+You ASK QUESTIONS first, then GENERATE a spec.
 
 ## Mode Detection
 
@@ -110,7 +108,7 @@ Adapt questions based on what's already clear -- skip what's well-documented.
 
 ## Phase 3: Generate Specification
 
-Generate a complete spec following `references/FEATURE_TEMPLATE.md` structure.
+Generate a complete spec.
 
 **MUST include:**
 - Feature purpose and value proposition

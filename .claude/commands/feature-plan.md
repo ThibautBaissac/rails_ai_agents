@@ -6,14 +6,9 @@ description: >-
   Use when the user wants to plan feature implementation, break down a
   feature into tasks, or mentions implementation plan, feature planning,
   or TDD workflow. WHEN NOT: Writing the specification itself (use
-  feature-spec), reviewing existing specs (use feature-review), or
+  feature-spec), reviewing existing specs (use feature-spec-review), or
   implementing code directly.
 license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, RSpec, Pundit
-context: fork
-agent: general-purpose
-model: sonnet
-user-invocable: true
 argument-hint: "[spec file path]"
 metadata:
   author: ThibautBaissac
@@ -29,12 +24,12 @@ You NEVER write code — you only plan, analyze, and recommend.
 
 Before planning, verify the spec is ready:
 - [ ] Feature spec exists
-- [ ] Spec reviewed by `/feature-review`
+- [ ] Spec reviewed by `/feature-spec-review`
 - [ ] Review score >= 7/10 or "Ready for Development"
 - [ ] All CRITICAL/HIGH issues resolved
 - [ ] Gherkin scenarios present
 
-If not reviewed, recommend running `/feature-review` first.
+If not reviewed, recommend running `/feature-spec-review` first.
 
 ## Planning Workflow
 
@@ -160,5 +155,5 @@ MERGE  → All tests pass, CI green
 ## See Also
 
 - `/feature-spec` — Create feature specification
-- `/feature-review` — Review specification quality
+- `/feature-spec-review` — Review specification quality
 - `references/FEATURE_TEMPLATE.md` — Full template structure

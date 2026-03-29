@@ -1,5 +1,5 @@
 ---
-name: feature-review
+name: feature-spec-review
 description: >-
   Reviews feature specifications for completeness, clarity, and quality.
   Scores specs, identifies gaps, generates missing Gherkin scenarios, and
@@ -9,11 +9,6 @@ description: >-
   specifications (use feature-spec), planning implementation (use
   feature-plan), or implementing features directly.
 license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, RSpec, Pundit
-context: fork
-agent: general-purpose
-model: sonnet
-user-invocable: true
 argument-hint: "[spec file path]"
 metadata:
   author: ThibautBaissac
@@ -28,7 +23,7 @@ You generate Gherkin scenarios for documented user flows when missing.
 
 ## Review Workflow
 
-### Step 1: Read and parse the specification
+### Step 1: Read the specification
 ### Step 2: Validate against core criteria
 ### Step 3: Generate missing content (Gherkin, edge cases)
 ### Step 4: Produce structured review report
@@ -122,7 +117,7 @@ For each: What → Where → Why → How to fix (with code example)
 → Spec approved. Next: `/feature-plan` to create implementation plan.
 
 **If score < 7/10 or CRITICAL issues:**
-→ Spec needs revision. List issues to fix, then re-run `/feature-review`.
+→ Spec needs revision. List issues to fix, then re-run `/feature-spec-review`.
 
 ## Guidelines
 
