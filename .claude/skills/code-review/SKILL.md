@@ -6,16 +6,12 @@ description: >-
   audit, or when user mentions review, audit, code quality, anti-patterns,
   or SOLID principles. WHEN NOT: Actually implementing fixes (use specialist
   agents), writing new tests (use rspec-agent), or generating new features.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, RuboCop, Brakeman
 context: fork
 agent: general-purpose
 model: sonnet
+allowed-tools: Read, Grep, Glob, Bash
 user-invocable: true
 argument-hint: "[file or directory path]"
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
 ---
 
 # Code Review

@@ -8,11 +8,7 @@ description: >-
   or TDD workflow. WHEN NOT: Writing the specification itself (use
   feature-spec), reviewing existing specs (use feature-spec-review), or
   implementing code directly.
-license: MIT
 argument-hint: "[spec file path]"
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
 ---
 
 # Feature Implementation Planner

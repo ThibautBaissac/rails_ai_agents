@@ -7,12 +7,7 @@ description: >-
   stakeholder request, or solution discovery. WHEN NOT: Well-defined technical
   tasks with clear requirements, bug fixes with known root causes, or routine
   CRUD operations.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+
 argument-hint: "[stakeholder request]"
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
 ---
 
 # Problem Framing & Solution Discovery

@@ -6,11 +6,7 @@ description: >-
   or when user mentions Action Cable, WebSockets, channels, or real-time.
   WHEN NOT: Simple HTTP request/response flows, REST APIs, static content,
   or features that don't need real-time updates.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, Action Cable
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+paths: "app/channels/**/*.rb, app/javascript/channels/**/*.js, spec/channels/**/*.rb"
 ---
 
 # Action Cable Patterns for Rails 8

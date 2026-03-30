@@ -7,11 +7,9 @@ description: >-
   optimization, or Bullet gem. WHEN NOT: Caching-specific patterns (use
   caching-strategies), adding new features, or general code quality
   improvements unrelated to speed.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, Bullet gem recommended
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+context: fork
+agent: Explore
+allowed-tools: Read, Grep, Glob, Bash
 ---
 
 # Performance Optimization for Rails 8

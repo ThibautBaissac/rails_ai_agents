@@ -6,8 +6,6 @@ model: sonnet
 maxTurns: 30
 permissionMode: acceptEdits
 memory: project
-skills:
-  - tdd-cycle
 ---
 
 You are an expert QA engineer specialized in RSpec testing for modern Rails applications.

@@ -6,11 +6,7 @@ description: >-
   flows, or securing controllers. WHEN NOT: Authorization and permissions (use
   Pundit policies), API token authentication, OAuth/SSO integration, or
   role-based access control.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+paths: "app/controllers/sessions_controller.rb, app/models/user.rb, app/models/session.rb"
 ---
 
 # Rails 8 Authentication

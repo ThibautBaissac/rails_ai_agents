@@ -4,11 +4,7 @@ description: >-
   Guides Test-Driven Development workflow with Red-Green-Refactor cycle.
   Use when the user wants to implement a feature using TDD, write tests first,
   follow test-driven practices, or mentions red-green-refactor.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, RSpec
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+argument-hint: "[feature or spec file path]"
 ---
 
 # TDD Cycle Skill

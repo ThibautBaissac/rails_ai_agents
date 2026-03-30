@@ -8,11 +8,7 @@ description: >-
   specification quality, or requirements validation. WHEN NOT: Writing
   specifications (use feature-spec), planning implementation (use
   feature-plan), or implementing features directly.
-license: MIT
 argument-hint: "[spec file path]"
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
 ---
 
 # Feature Specification Reviewer

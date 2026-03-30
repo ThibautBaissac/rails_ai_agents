@@ -8,17 +8,13 @@ description: >-
   WHEN NOT: Implementing security fixes (use specialist agents), setting up
   authentication (use authentication-flow), or writing Pundit policies (use
   policy-agent).
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, Brakeman, Bundler Audit, Pundit
 context: fork
 agent: Explore
 model: opus
 effort: high
+allowed-tools: Read, Grep, Glob, Bash
 user-invocable: true
 argument-hint: "[file or directory path]"
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
 ---
 
 # Security Audit

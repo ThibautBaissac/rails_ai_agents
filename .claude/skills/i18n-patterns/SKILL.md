@@ -7,11 +7,7 @@ description: >-
   multi-language. WHEN NOT: English-only applications without localization
   needs, formatting handled by presenters, or date/number formatting in
   non-user-facing code.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, I18n
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+paths: "config/locales/**/*.yml, app/views/**/*.erb"
 ---
 
 # I18n Patterns for Rails 8

@@ -7,11 +7,7 @@ description: >-
   mixins, or shared behavior. WHEN NOT: Logic used by only one model or
   controller (keep it in place), complex business logic (use service objects),
   or query encapsulation (use query objects).
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, RSpec
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+paths: "app/models/concerns/**/*.rb, app/controllers/concerns/**/*.rb"
 ---
 
 # Rails Concern Generator (TDD)

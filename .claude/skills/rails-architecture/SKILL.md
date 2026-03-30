@@ -10,11 +10,6 @@ description: >-
   writing tests, or debugging runtime errors.
 model: sonnet
 effort: high
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+
-metadata:
-  author: ThibautBaissac
-  version: "1.1"
 ---
 
 # Modern Rails 8 Architecture Patterns
@@ -140,8 +135,6 @@ end
 | Component | Component | Rendering, variants |
 | Policy | Unit | Authorization rules |
 | System | E2E | Critical user paths |
-
-See /tdd-cycle skill for TDD workflow.
 
 ## New Feature Checklist
 

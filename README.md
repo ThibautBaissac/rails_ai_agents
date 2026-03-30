@@ -38,9 +38,9 @@ cp -r .claude/ /path/to/your-rails-app/.claude/
 | `turbo-agent` | Turbo Frames, Streams, Drive | sonnet |
 | `stimulus-agent` | Stimulus controllers | sonnet |
 | `tailwind-agent` | Tailwind CSS styling | sonnet |
-| `rspec-agent` | RSpec tests (preloads `tdd-cycle` skill) | sonnet |
+| `rspec-agent` | RSpec tests | sonnet |
 | `implementation-agent` | TDD GREEN phase orchestrator (worktree isolation) | sonnet |
-| `tdd-refactoring-agent` | TDD REFACTOR phase (preloads `tdd-cycle` skill) | sonnet |
+| `tdd-refactoring-agent` | TDD REFACTOR phase | sonnet |
 | `lint-agent` | RuboCop linting and auto-correction | haiku |
 
 ### Commands (`.claude/commands/`)

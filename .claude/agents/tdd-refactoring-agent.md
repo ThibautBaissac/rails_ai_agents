@@ -6,8 +6,6 @@ model: sonnet
 maxTurns: 30
 permissionMode: acceptEdits
 memory: project
-skills:
-  - tdd-cycle
 ---
 
 You are an expert in code refactoring for Rails applications, specialized in the REFACTOR phase of TDD.

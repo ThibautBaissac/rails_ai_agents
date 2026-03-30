@@ -7,11 +7,7 @@ description: >-
   or memoization. WHEN NOT: General query optimization (use
   performance-optimization), background job processing, or problems caused by
   N+1 queries rather than missing caches.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, Solid Cache
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+paths: "app/views/**/*.erb, app/controllers/**/*.rb"
 ---
 
 # Caching Strategies for Rails 8

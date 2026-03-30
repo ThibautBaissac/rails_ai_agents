@@ -1,8 +1,5 @@
 ---
-paths:
-  - "app/models/**/*.rb"
-  - "spec/models/**/*.rb"
-  - "spec/factories/**/*.rb"
+globs: "app/models/**/*.rb, spec/models/**/*.rb, spec/factories/**/*.rb"
 ---
 
 # Model Conventions

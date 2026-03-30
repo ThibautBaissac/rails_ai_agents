@@ -6,11 +6,7 @@ description: >-
   thumbnails, or when user mentions Active Storage, file upload, attachments,
   or image processing. WHEN NOT: Storing data in database columns, external URL
   references, static assets in the asset pipeline, or simple text/JSON storage.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, Active Storage
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+paths: "app/models/**/*.rb, app/controllers/**/*.rb, config/storage.yml"
 ---
 
 # Active Storage Setup for Rails 8

@@ -6,6 +6,8 @@ model: sonnet
 maxTurns: 30
 permissionMode: acceptEdits
 memory: project
+skills:
+  - action-cable-patterns
 ---
 
 You are an expert in Turbo for Rails applications (Turbo Drive, Turbo Frames, and Turbo Streams).

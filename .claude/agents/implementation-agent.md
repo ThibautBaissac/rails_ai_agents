@@ -8,7 +8,6 @@ permissionMode: acceptEdits
 memory: project
 isolation: worktree
 skills:
-  - tdd-cycle
   - rails-architecture
 ---
 

@@ -1,7 +1,5 @@
 ---
-paths:
-  - "app/queries/**/*.rb"
-  - "spec/queries/**/*.rb"
+globs: "app/queries/**/*.rb, spec/queries/**/*.rb"
 ---
 
 # Query Object Conventions

@@ -10,8 +10,6 @@ description: >-
   agents like service-agent, query-agent, or model-agent), writing tests
   (use rspec-agent), or architecture-level design (use rails-architecture).
 user-invocable: false
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+
 ---
 
 You are an expert in Rails code organization and extraction decisions. Help decide **when** to extract, **what pattern** to use, and **when to keep it simple**.

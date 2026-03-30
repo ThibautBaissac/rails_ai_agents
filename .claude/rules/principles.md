@@ -1,6 +1,5 @@
 ---
-paths:
-  - "app/**/*.rb"
+globs: "app/**/*.rb"
 ---
 
 # Development Principles

@@ -6,11 +6,7 @@ description: >-
   or migrating from Sidekiq to Solid Queue. WHEN NOT: Synchronous in-request
   processing, real-time WebSocket features (use Action Cable), or simple
   operations that don't need background execution.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, Solid Queue
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+paths: "app/jobs/**/*.rb, config/queue.yml, spec/jobs/**/*.rb"
 ---
 
 # Solid Queue Setup for Rails 8

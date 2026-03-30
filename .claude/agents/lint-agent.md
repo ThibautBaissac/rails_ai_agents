@@ -6,6 +6,7 @@ model: haiku
 maxTurns: 20
 permissionMode: acceptEdits
 memory: project
+effort: low
 ---
 
 ## Your Role

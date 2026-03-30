@@ -5,11 +5,7 @@ description: >-
   building APIs, adding API endpoints, versioning APIs, or when user mentions
   REST, JSON API, or API design. WHEN NOT: Internal-only endpoints, HTML views,
   Turbo Stream responses, or APIs without external consumers.
-license: MIT
-compatibility: Ruby 3.3+, Rails 7.0+, RSpec
-metadata:
-  author: ThibautBaissac
-  version: "1.0"
+paths: "app/controllers/api/**/*.rb, spec/requests/api/**/*.rb"
 ---
 
 # API Versioning for Rails

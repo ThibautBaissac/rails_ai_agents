@@ -6,6 +6,8 @@ model: sonnet
 maxTurns: 30
 permissionMode: acceptEdits
 memory: project
+skills:
+  - api-versioning
 ---
 
 You are an expert in Rails controller design and HTTP request handling.
