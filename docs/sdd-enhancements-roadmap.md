@@ -64,7 +64,7 @@ The SDD toolkit is an 8-command pipeline built on spec-kit:
 
 ---
 
-## Enhancement 2: Lightweight Mode for Small Changes
+## Enhancement 2: Lightweight Mode for Small Changes [DONE]
 
 **Priority**: 2 (Medium effort, High impact -- removes adoption friction)
 
@@ -211,43 +211,38 @@ For each phase:
 
 ---
 
-## Enhancement 5: Post-Implementation Drift Detection (`sdd:validate`)
+## Enhancement 5: Post-Implementation Drift Detection (`sdd:validate`) [DONE]
 
 **Priority**: 5 (Medium effort, High impact -- closes the spec-anchored loop)
 
 **Problem**: After implementation, specs drift from reality. No mechanism detects when implementation diverges from spec promises.
 
-**Research basis**: ThoughtWorks Technology Radar places "Spec-Anchored" (specs synchronized with code throughout lifecycle via automated tests) as the sweet spot for production systems.
+**Research basis**: ThoughtWorks Technology Radar places "Spec-Anchored" (specs synchronized with code throughout lifecycle via automated tests) as the sweet spot for production systems. LLM-based traceability achieves 87%+ precision (arxiv:2506.16440). Comment anchors (`# Implements FR-003`) are fragile and have zero day-one coverage on existing codebases.
 
-**Implementation**:
+**Implementation**: 4-layer hybrid approach that works on day one without code annotations.
 
-1. Create new command `.claude/commands/sdd/validate.md`:
-   - Load spec.md and extract all FR-### and SC-### identifiers
-   - Search codebase for `# Implements FR-###` comment anchors
-   - Run the test suite and map pass/fail to spec requirements
-   - Report:
-     - Requirements with passing tests (covered)
-     - Requirements with failing tests (broken)
-     - Requirements with no tests (uncovered)
-     - Tests with no requirement mapping (orphaned)
+1. **Layer 1 — Structural Scan** (deterministic, seconds): Extract entities from spec, use Rails naming conventions to check file existence (model, controller, service, policy, spec files). Catches "spec promises entity X but it doesn't exist."
 
-2. Add requirement ID anchors convention:
-   - Implementation files include `# Implements FR-003` comments
-   - Test files include `# Validates SC-001` comments
-   - `sdd:implement` auto-generates these anchors when creating code
+2. **Layer 2 — Test Coverage Mapping** (deterministic, seconds): Parse `bundle exec rspec --dry-run --format json` to get all test descriptions and file paths. Keyword-match requirement text against test names. If RSpec metadata tags exist (`requirement: "FR-001"` on `describe` blocks), use those for exact matching. Run matching tests and report pass/fail per requirement.
 
-3. Auto-update spec header after validation:
+3. **Layer 3 — AI Semantic Analysis** (probabilistic, minutes): For requirements not covered by layers 1-2, the LLM reads each uncovered requirement and searches the codebase for implementing code. Reports evidence with confidence assessment.
 
-```markdown
-**Implementation Status**: Validated 2026-03-29
-**Coverage**: 12/15 requirements covered (80%)
-**Branch**: `004-user-auth`
+4. **Layer 4 — Acceptance Test Generation** (on-demand): For requirements still flagged "uncovered," offer to generate acceptance tests from the spec's Given/When/Then scenarios. User opts in.
+
+**Output**: Validation report with per-requirement status table, coverage percentage, and recommended actions.
+
+**Optional RSpec metadata tags** (non-invasive, incremental):
+```ruby
+RSpec.describe Users::CreateService, requirement: "FR-001" do
+  # all tests inside trace to FR-001 automatically
+  # runnable: bundle exec rspec --tag requirement:FR-001
+end
 ```
 
-**Files to create/modify**:
-- `.claude/commands/sdd/validate.md` (new)
-- `.claude/commands/sdd/implement.md` (add anchor generation convention)
-- `.specify/templates/spec-template.md` (add Implementation Status field)
+**Files created**:
+- `.claude/commands/sdd/validate.md` (new command)
+- `.specify/templates/validation-report-template.md` (report structure)
+- `.specify/scripts/bash/collect-test-descriptions.sh` (RSpec dry-run parser)
 
 ---
 

@@ -1,6 +1,6 @@
 # Rails AI Agents
 
-A production-ready Claude Code setup for Ruby on Rails development: **18 specialized agents**, **19 slash commands** (including the [SDD kit](#spec-driven-development-sdd-kit)), **13 skills**, **12 path-scoped rules**, and **6 lifecycle hooks**. Drop it into your project and your AI assistant instantly knows Rails conventions, TDD workflows, and production patterns.
+A production-ready Claude Code setup for Ruby on Rails development: **18 specialized agents**, **20 slash commands** (including the [SDD kit](#spec-driven-development-sdd-kit)), **13 skills**, **12 path-scoped rules**, and **6 lifecycle hooks**. Drop it into your project and your AI assistant instantly knows Rails conventions, TDD workflows, and production patterns.
 
 Also includes:
 - [Spec Driven Development (SDD) kit](#spec-driven-development-sdd-kit) — a full specification-to-implementation pipeline + [lightweight mode](#sdd-change-lightweight-mode) for bug fixes.
@@ -113,7 +113,7 @@ cp -r .claude/ /path/to/your-rails-app/.claude/
 
 ## Spec Driven Development (SDD) Kit
 
-A structured specification-to-implementation pipeline powered by 10 slash commands. SDD enforces a disciplined workflow: define what you're building before writing code, validate requirements quality, then implement from a task plan.
+A structured specification-to-implementation pipeline powered by 11 slash commands. SDD enforces a disciplined workflow: define what you're building before writing code, validate requirements quality, then implement from a task plan.
 
 ### SDD Commands (`.claude/commands/sdd/`)
 
@@ -129,6 +129,7 @@ A structured specification-to-implementation pipeline powered by 10 slash comman
 | `/sdd:analyze` | Read-only consistency analysis across spec, plan, and tasks |
 | `/sdd:implement` | Execute the task plan phase-by-phase with progress tracking |
 | `/sdd:implement-subagents` | Same as implement, but spawns a fresh-context subagent per task to prevent context rot on large features |
+| `/sdd:validate` | Post-implementation drift detection — verifies code implements what the spec promises (4-layer hybrid, no annotations needed) |
 
 ### SDD Workflow
 
@@ -144,6 +145,7 @@ A structured specification-to-implementation pipeline powered by 10 slash comman
 /sdd:implement                     # 9. Execute tasks with verification
 # Or for large features:
 /sdd:implement-subagents           # 9. Fresh-context subagent per task (prevents context rot)
+/sdd:validate                      # 10. Verify implementation matches spec (post-implementation)
 ```
 
 Each command hands off to the next via suggested prompts. The pipeline creates a `specs/<branch-name>/` directory with all artifacts:
@@ -157,7 +159,8 @@ specs/001-user-auth/
 ├── quickstart.md     # Integration scenarios (/sdd:plan)
 ├── contracts/        # Route and API contracts (/sdd:plan)
 ├── tasks.md          # Executable task list (/sdd:tasks)
-└── checklists/       # Requirements quality checklists (/sdd:checklist)
+├── checklists/       # Requirements quality checklists (/sdd:checklist)
+└── validation-report.md  # Post-implementation drift report (/sdd:validate)
 ```
 
 ### SDD Infrastructure (`.specify/`)
@@ -180,6 +183,7 @@ SDD supports extensibility via `.specify/extensions.yml` for before/after hooks 
 - **Checklists are "unit tests for English"** — They validate requirements quality, not implementation correctness
 - **Tasks organized by user story** — Each story is independently implementable and testable (MVP-first)
 - **Fresh-context implementation** — `/sdd:implement-subagents` spawns a clean subagent per task, preventing context rot on large features
+- **Post-implementation validation** — `/sdd:validate` uses a 4-layer hybrid approach (structural scan, test mapping, AI semantic analysis, acceptance test generation) to verify the code matches the spec — works on day one, no code annotations needed
 
 ### SDD Small-Change (Lightweight Mode)
 
