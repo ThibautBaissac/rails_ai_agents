@@ -1,9 +1,9 @@
 # Rails AI Agents
 
-A production-ready Claude Code setup for Ruby on Rails development: **18 specialized agents**, **16 slash commands** (including the [SDD kit](#spec-driven-development-sdd-kit)), **13 skills**, **12 path-scoped rules**, and **6 lifecycle hooks**. Drop it into your project and your AI assistant instantly knows Rails conventions, TDD workflows, and production patterns.
+A production-ready Claude Code setup for Ruby on Rails development: **18 specialized agents**, **19 slash commands** (including the [SDD kit](#spec-driven-development-sdd-kit)), **13 skills**, **12 path-scoped rules**, and **6 lifecycle hooks**. Drop it into your project and your AI assistant instantly knows Rails conventions, TDD workflows, and production patterns.
 
 Also includes:
-- [Spec Driven Development (SDD) kit](#spec-driven-development-sdd-kit) — a full specification-to-implementation pipeline.
+- [Spec Driven Development (SDD) kit](#spec-driven-development-sdd-kit) — a full specification-to-implementation pipeline + [lightweight mode](#sdd-change-lightweight-mode) for bug fixes.
 - separate [37signals-style collection](#37signals-collection).
 - Claude Code Extensibility Guide
 - AI Terminology Glossary — 289 terms across 25 categories. Also available as a [browsable HTML version](https://thibautbaissac.github.io/ai/glossary.html).
@@ -180,6 +180,37 @@ SDD supports extensibility via `.specify/extensions.yml` for before/after hooks 
 - **Checklists are "unit tests for English"** — They validate requirements quality, not implementation correctness
 - **Tasks organized by user story** — Each story is independently implementable and testable (MVP-first)
 - **Fresh-context implementation** — `/sdd:implement-subagents` spawns a clean subagent per task, preventing context rot on large features
+
+### SDD Small-Change (Lightweight Mode)
+
+For bug fixes and small features that don't need the full SDD ceremony. Three commands, no plan, no checklists, no analysis — just specify, task, implement.
+
+#### Commands (`.claude/commands/sdd-change/`)
+
+| Command | Purpose |
+|---|---|
+| `/sdd-change:specify` | Create a minimal change spec (problem, fix, acceptance criteria, files affected) |
+| `/sdd-change:tasks` | Generate a flat 3-8 task list from the change spec |
+| `/sdd-change:implement` | Execute tasks sequentially with validation |
+
+#### Workflow
+
+```
+/sdd-change:specify Fix login timeout — sessions expire after 5min instead of 30
+/sdd-change:tasks
+/sdd-change:implement
+```
+
+#### When to Use Which
+
+| Situation | Use |
+|---|---|
+| Bug fix, patch, tweak | `/sdd-change:specify` |
+| New feature, multi-story epic | `/sdd:specify` |
+| Refactor touching 1-3 files | `/sdd-change:specify` |
+| Refactor touching 6+ files | `/sdd:specify` |
+
+The lightweight pipeline warns you if your change looks too complex (>3 acceptance criteria or >6 files affected) and suggests switching to the full pipeline.
 
 ## Extensibility Guide
 
