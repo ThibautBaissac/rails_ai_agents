@@ -1,6 +1,6 @@
 # Rails AI Agents
 
-A production-ready Claude Code setup for Ruby on Rails development: **18 specialized agents**, **24 slash commands** (including the [SDD kit](#spec-driven-development-sdd-kit)), **13 skills**, **12 path-scoped rules**, **1 MCP**, and **6 lifecycle hooks**. Drop it into your project and your AI assistant instantly knows Rails conventions, TDD workflows, and production patterns.
+A production-ready Claude Code setup for Ruby on Rails development: **18 specialized agents**, **24 slash commands** (including the [SDD kit](#spec-driven-development-sdd-kit)), **14 skills**, **12 path-scoped rules**, **1 MCP**, and **6 lifecycle hooks**. Drop it into your project and your AI assistant instantly knows Rails conventions, TDD workflows, and production patterns.
 
 Also includes:
 - [Spec Driven Development (SDD) kit](#spec-driven-development-sdd-kit) — a full specification-to-implementation pipeline + lightweight mode for bug fixes.
@@ -59,12 +59,13 @@ cp -r .claude/ /path/to/your-rails-app/.claude/
 
 ### Skills (`.claude/skills/`)
 
-13 skills with reference docs. Two patterns: **task skills** (user-invocable workflows) and **knowledge skills** (auto-loaded conventions).
+14 skills with reference docs. Two patterns: **task skills** (user-invocable workflows) and **knowledge skills** (auto-loaded conventions).
 
 | Skill | Type | Purpose |
 |---|---|---|
 | `code-review` | Task | SOLID analysis, N+1 detection, anti-patterns (read-only) |
 | `security-audit` | Task | OWASP Top 10 audit with Brakeman (runs with opus) |
+| `accessibility-review` | Task | WCAG 2.2 AA audit with axe-core / Lighthouse / Pa11y, progressive-disclosure references for ARIA patterns and Rails snippets (runs with opus) |
 | `rails-architecture` | Knowledge | Layered architecture decisions (runs with opus) |
 | `authentication-flow` | Knowledge | Rails 8 built-in authentication |
 | `caching-strategies` | Knowledge | Fragment, Russian doll, low-level caching |
