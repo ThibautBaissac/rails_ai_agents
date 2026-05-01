@@ -1,6 +1,6 @@
 # Rails AI Agents
 
-A production-ready Claude Code setup for Ruby on Rails development: **18 specialized agents**, **24 slash commands** (including the [SDD kit](#spec-driven-development-sdd-kit)), **14 skills**, **12 path-scoped rules**, **1 MCP**, and **6 lifecycle hooks**. Drop it into your project and your AI assistant instantly knows Rails conventions, TDD workflows, and production patterns.
+A production-ready Claude Code setup for Ruby on Rails development: **19 specialized agents**, **26 slash commands** (including the [SDD kit](#spec-driven-development-sdd-kit)), **18 skills**, **14 rules** (11 path-scoped + 3 always-on), **1 MCP**, and **6 lifecycle hooks**. Drop it into your project and your AI assistant instantly knows Rails conventions, TDD workflows, and production patterns.
 
 Also includes:
 - [Spec Driven Development (SDD) kit](#spec-driven-development-sdd-kit) — a full specification-to-implementation pipeline + lightweight mode for bug fixes.
@@ -20,14 +20,14 @@ cp -r .claude/ /path/to/your-rails-app/.claude/
 
 ### Agents (`.claude/agents/`)
 
-18 specialist agents, each with `permissionMode: acceptEdits`, `memory: project`, `maxTurns` limits, and WHEN/WHEN NOT descriptions for auto-delegation.
+19 specialist agents, each with `permissionMode: acceptEdits`, `memory: project`, `maxTurns` limits, and WHEN/WHEN NOT descriptions for auto-delegation.
 
 | Agent | Domain | Model |
 |---|---|---|
 | `model-agent` | ActiveRecord models, validations, associations, scopes | sonnet |
 | `controller-agent` | Thin RESTful controllers, strong params, Pundit | sonnet |
 | `service-agent` | Service objects, Result pattern, SOLID | sonnet |
-| `migration-agent` | Safe, reversible database migrations | sonnet |
+| `migration-agent` | Safe, reversible database migrations | haiku |
 | `policy-agent` | Pundit authorization policies | sonnet |
 | `form-agent` | Multi-model forms, wizard forms | sonnet |
 | `query-agent` | Complex queries, N+1 prevention | sonnet |
@@ -42,10 +42,13 @@ cp -r .claude/ /path/to/your-rails-app/.claude/
 | `implementation-agent` | TDD GREEN phase orchestrator (worktree isolation) | sonnet |
 | `tdd-refactoring-agent` | TDD REFACTOR phase | sonnet |
 | `lint-agent` | RuboCop linting and auto-correction | haiku |
+| `database-reviewer` | PostgreSQL query optimization, schema design, performance | sonnet |
 
 ### Commands (`.claude/commands/`)
 
-7 standalone slash commands for feature development workflows. See also [SDD commands](#sdd-commands-claudecommandssdd) below.
+26 slash commands across 4 namespaces. See also [SDD commands](#sdd-commands-claudecommandssdd) below.
+
+#### Standalone (7)
 
 | Command | Purpose |
 |---|---|
@@ -57,16 +60,30 @@ cp -r .claude/ /path/to/your-rails-app/.claude/
 | `/prompt-improver` | Scores and rewrites vague prompts into specific, actionable ones |
 | `/catchup` | "Welcome back" report on a feature branch — commits, authors, themes, and risks since the dev's last contribution |
 
+#### Sentry Commands (`.claude/commands/sentry/`)
+
+| Command | Purpose |
+|---|---|
+| `/sentry:monitor` | Check for new production errors and propose fixes |
+| `/sentry:fix-error` | Launch a background agent in an isolated worktree to fix a Sentry error |
+| `/sentry:fix-status` | List all active Sentry fix branches and their status |
+| `/sentry:report` | Generate a markdown summary of Sentry error status for standups or PRs |
+| `/sentry:resolve` | Resolve, ignore, or reopen a Sentry issue after a fix is deployed |
+
 ### Skills (`.claude/skills/`)
 
-14 skills with reference docs. Two patterns: **task skills** (user-invocable workflows) and **knowledge skills** (auto-loaded conventions).
+18 skills with reference docs. Two patterns: **task skills** (user-invocable workflows) and **knowledge skills** (auto-loaded conventions).
 
 | Skill | Type | Purpose |
 |---|---|---|
 | `code-review` | Task | SOLID analysis, N+1 detection, anti-patterns (read-only) |
 | `security-audit` | Task | OWASP Top 10 audit with Brakeman (runs with opus) |
 | `accessibility-review` | Task | WCAG 2.2 AA audit with axe-core / Lighthouse / Pa11y, progressive-disclosure references for ARIA patterns and Rails snippets (runs with opus) |
+| `codex-review` | Task | Independent second opinion from OpenAI Codex CLI on plans, diffs, or specs |
+| `dependabot-review` | Task | Reviews Dependabot gem upgrade PRs for breaking changes and merge readiness |
+| `behavioral-guidelines` | Knowledge | Guidelines to reduce common LLM coding mistakes (auto-loaded) |
 | `rails-architecture` | Knowledge | Layered architecture decisions (runs with opus) |
+| `postgres-patterns` | Knowledge | PostgreSQL query optimization, schema design, indexing, and security |
 | `authentication-flow` | Knowledge | Rails 8 built-in authentication |
 | `caching-strategies` | Knowledge | Fragment, Russian doll, low-level caching |
 | `performance-optimization` | Knowledge | N+1 detection, query optimization |
@@ -80,7 +97,9 @@ cp -r .claude/ /path/to/your-rails-app/.claude/
 
 ### Rules (`.claude/rules/`)
 
-12 path-scoped rules that auto-load only when Claude works on matching files:
+14 rules: 11 path-scoped (auto-load when Claude works on matching files) and 3 always-on.
+
+#### Path-scoped (11)
 
 | Rule | Scoped to |
 |---|---|
@@ -94,8 +113,15 @@ cp -r .claude/ /path/to/your-rails-app/.claude/
 | `migrations.md` | `db/migrate/**`, `db/schema.rb` |
 | `views.md` | `app/views/**`, `app/components/**`, `app/presenters/**` |
 | `testing.md` | `spec/**` |
-| `principles.md` | `app/**/*.rb` |
 | `anti-patterns.md` | `app/**/*.rb`, `spec/**/*.rb` |
+
+#### Always-on (3)
+
+| Rule | Purpose |
+|---|---|
+| `principles.md` | KISS, DRY, YAGNI, SRP, and Rails architecture principles |
+| `cli.md` | Rails CLI commands reference (dev server, tests, db, generators) |
+| `cli-tools.md` | Preferred CLI tools: `rg` over `grep`, `fd` over `find` |
 
 ### Hooks (`.claude/settings.json`)
 
