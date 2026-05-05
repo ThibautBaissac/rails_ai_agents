@@ -4,7 +4,7 @@ A production-ready Claude Code setup for Ruby on Rails development: **19 special
 
 Also includes:
 - [Spec Driven Development (SDD) kit](#spec-driven-development-sdd-kit) — a full specification-to-implementation pipeline + lightweight mode for bug fixes.
-- separate 37signals-style agents, skills and rules collection.
+- a separate 37signals-style conventions pack (`.claude_37signals/`) for teams that prefer rich models + Minitest over the default layered setup.
 - Claude Code Extensibility Guide
 - and more!
 
@@ -12,9 +12,19 @@ Also includes:
 ## Quick Start
 
 ```bash
-# Copy the .claude/ directory into your Rails project
+# Most projects: copy the default .claude/ directory into your Rails project
 cp -r .claude/ /path/to/your-rails-app/.claude/
 ```
+
+| If you want... | Copy |
+|---|---|
+| Default setup (layered architecture, RSpec, Pundit, PostgreSQL) | `.claude/` |
+| 37signals-style conventions (rich models, concerns, Minitest) | `.claude_37signals/` **instead of** `.claude/` |
+| Spec Driven Development commands (`/sdd:*`, `/sdd-change:*`) | `.specify/` in addition to your chosen `.claude*` pack |
+| Statusline | `statusline/` |
+| Sentry integration | `mcp/sentry_monitor/` |
+
+`.specify/` is optional unless you want the SDD workflow. `.claude_37signals/` is currently a conventions pack (instructions, agents, skills, rules, settings), while the slash-command set documented below lives under `.claude/commands/`.
 
 ## What's Inside
 
@@ -214,7 +224,7 @@ specs/001-user-auth/
 
 ### SDD Infrastructure (`.specify/`)
 
-The `.specify/` directory contains the scaffolding that powers SDD commands:
+The `.specify/` directory contains the scaffolding that powers SDD commands. It is optional for normal prompting; you only need it for the `/sdd:*` and `/sdd-change:*` workflows:
 
 - **`templates/`** — Markdown templates for specs, plans, tasks, checklists, constitutions, and agent context files
 - **`scripts/bash/`** — Shell scripts for branch creation, prerequisite checking, plan setup, and agent context updates
