@@ -26,21 +26,24 @@ cp -r .claude/ /path/to/your-rails-app/.claude/
 
 `.specify/` is optional unless you want the SDD workflow. `.claude_37signals/` is currently a conventions pack (instructions, agents, skills, rules, settings), while the slash-command set documented below lives under `.claude/commands/`.
 
-## OpenAI Codex Support
+## OpenAI Codex and GitHub Copilot Support
 
-This repo also includes a practical Codex setup:
+This repo includes a practical setup for both OpenAI Codex and GitHub Copilot (including different Copilot-backed models such as GPT, Claude, and Gemini), while keeping `.claude/` as the canonical source.
 
-- `AGENTS.md` is the Codex-facing project instruction file. It mirrors the main Rails conventions so Codex gets the same architectural guidance as Claude Code.
-- `.agents/skills/` is the Codex-visible skills directory for this repo.
-- `.claude/skills/` remains the canonical source for shared skills in this project.
+- `AGENTS.md` is the shared high-level project instruction file.
+- `.agents/skills/` is the mirrored skills directory used by Codex and reusable from Copilot.
+- `.claude/skills/` remains the canonical source for shared skills.
+- `.github/copilot-instructions.md` is the Copilot entrypoint.
+- `.github/instructions/claude-rules/` contains generated path-scoped bridge files that point back to `.claude/rules/`.
 
-Because Codex skill discovery is currently unreliable with symlinks, this repo includes a local sync script that copies Claude skills into real directories for Codex:
+Because Codex skill discovery is currently unreliable with symlinks, this repo includes a local sync script that copies Claude skills into real directories:
 
 ```bash
 scripts/sync_claude_skills_to_codex.sh
+scripts/sync_claude_rules_to_copilot.sh
 ```
 
-Run it after changing a skill in `.claude/skills/`. If Codex is already running, restart or reload it so it picks up the updated mirrored skills.
+Run these scripts after adding, removing, or renaming any skill or rule. If Codex or Copilot is already running, restart or reload the chat session to pick up updates.
 
 ## What's Inside
 
