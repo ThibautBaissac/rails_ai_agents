@@ -294,6 +294,14 @@ For bug fixes and small features that don't need the full SDD ceremony. Three co
 
 The lightweight pipeline warns you if your change looks too complex (>3 acceptance criteria or >6 files affected) and suggests switching to the full pipeline.
 
+## Scripts (`scripts/`)
+
+| Script | Purpose |
+|---|---|
+| `start_rails_tmux.sh` | Open (or reuse) a tmux session with a three-pane main-vertical layout: editor on the left, `bin/dev` (or `bin/rails server`) top-right, `bin/rails console` bottom-right. Idempotent — re-running attaches to the existing session and auto-restarts any pane that has dropped back to a shell prompt. |
+| `sync_claude_skills_to_codex.sh` | Mirror `.claude/skills/` into `.agents/skills/` for OpenAI Codex compatibility |
+| `sync_claude_rules_to_copilot.sh` | Generate `.github/instructions/claude-rules/` bridge files from `.claude/rules/` for GitHub Copilot |
+
 ## MCP Servers (`mcp/`)
 
 Custom MCP servers that extend Claude Code with external integrations.
