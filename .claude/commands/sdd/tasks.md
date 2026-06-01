@@ -9,6 +9,10 @@ handoffs:
     agent: sdd:implement
     prompt: Start the implementation in phases
     send: true
+  - label: Implement With Specialist Agents
+    agent: sdd:implement-subagents
+    prompt: Start the implementation in phases, delegating each task to its specialist agent
+    send: true
 ---
 
 ## User Input
@@ -133,6 +137,8 @@ The tasks.md should be immediately executable - each task must be specific enoug
 
 **Tests are OPTIONAL**: Only generate test tasks if explicitly requested in the feature specification or if user requests TDD approach.
 
+**Test ordering (when tests are generated)**: Follow Red-Green-Refactor. Each test task MUST be emitted immediately **before** the implementation task it covers — the failing spec first, then the minimal code that makes it pass. Never place an implementation task ahead of its corresponding test task. This keeps the task list consistent with `/sdd:implement`, which executes test tasks before their implementation tasks.
+
 ### Checklist Format (REQUIRED)
 
 Every task MUST strictly follow this format:
@@ -193,9 +199,10 @@ Every task MUST strictly follow this format:
 ### Phase Structure
 
 - **Phase 1**: Setup — config initializers, routes, Gemfile additions
-- **Phase 2**: Foundational — migrations + `db:migrate` + models + model tests + fixtures (MUST complete before user stories)
+- **Phase 2**: Foundational — migrations + `db:migrate` + fixtures, then (TDD) model spec → model (MUST complete before user stories)
 - **Phase 3+**: User Stories in priority order (P1, P2, P3...)
-  - Within each story: service + service tests → controller + controller tests → views → system tests
+  - Within each story (TDD order): service spec → service → request/controller spec → controller → views → system test
+  - When tests are NOT requested: omit the spec tasks but keep the same implementation order
   - If story adds schema: migration → model before service
   - Each phase should be a complete, independently testable increment
-- **Final Phase**: Polish — `bin/rubocop`, `bin/brakeman --no-pager`, `bin/ci` validation
+- **Final Phase**: Polish — `bundle exec rubocop -a`, `bin/brakeman --no-pager`, `bundle exec rspec` validation

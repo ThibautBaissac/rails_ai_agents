@@ -1,5 +1,5 @@
 ---
-description: Execute the implementation plan by processing and executing all tasks defined in tasks.md
+description: Execute the implementation plan by delegating each task in tasks.md to the matching specialist agent (model-agent, service-agent, rspec-agent, ...) in a fresh context, orchestrated phase-by-phase. Use /sdd:implement for inline single-context execution instead.
 ---
 
 ## User Input
@@ -116,12 +116,37 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 6. Execute implementation using **fresh-context subagents** per task:
 
-   The parent agent (you) acts as an **orchestrator**. Instead of executing all tasks inline (which causes context rot on long sessions), delegate each implementation task to a fresh subagent via the **Agent tool**. Each subagent gets a clean context window with only the information it needs.
+   The parent agent (you) acts as an **orchestrator**. Instead of executing all tasks inline (which causes context rot on long sessions), delegate each implementation task to a fresh subagent via the **Agent tool**, routed to the **specialist agent** that matches the task (see Specialist agent routing below). Each subagent gets a clean context window with only the information it needs.
+
+   **Specialist agent routing** — set the Agent tool's `subagent_type` from the task's primary output file or intent, instead of a generic agent:
+
+   | Task target | `subagent_type` |
+   |-------------|-----------------|
+   | `spec/**` test tasks (TDD RED) | `rspec-agent` |
+   | `db/migrate/*` migrations | `migration-agent` |
+   | `app/models/*` | `model-agent` |
+   | `app/services/*` | `service-agent` |
+   | `app/queries/*` | `query-agent` |
+   | `app/controllers/*` | `controller-agent` |
+   | `app/policies/*` | `policy-agent` |
+   | `app/forms/*` | `form-agent` |
+   | `app/presenters/*` | `presenter-agent` |
+   | `app/components/*` | `viewcomponent-agent` |
+   | `app/jobs/*` | `job-agent` |
+   | `app/mailers/*` | `mailer-agent` |
+   | `app/javascript/controllers/*` (Stimulus) | `stimulus-agent` |
+   | Turbo Frames/Streams tasks | `turbo-agent` |
+   | View styling / Tailwind tasks | `tailwind-agent` |
+   | Anything without a clear match | `general-purpose` |
+
+   - Choose the specialist by the task's primary output file. If a task spans layers, pick the layer it mostly creates (or split it).
+   - **TDD pairing**: route the test task to `rspec-agent` (writes the failing spec), then route the matching implementation task to its layer specialist (makes it pass). The parent runs the spec between the two to confirm RED → GREEN.
+   - Fall back to `general-purpose` only when nothing matches.
 
    **Execution rules:**
    - **Phase-by-phase execution**: Complete each phase before moving to the next
    - **Direct execution (no subagent)**: Phase 1 (Setup) tasks and the final Polish phase — these are small config changes or CLI tool runs that don't benefit from subagent isolation
-   - **Subagent execution**: All other phases (Foundational, User Stories) — spawn a fresh Agent per task
+   - **Subagent execution**: All other phases (Foundational, User Stories) — spawn a fresh Agent per task, routed to the matching specialist via `subagent_type`
    - **Sequential tasks** (no `[P]` marker): Execute one subagent at a time, wait for completion before starting the next
    - **Parallel tasks** (`[P]` marker): Spawn multiple subagents concurrently using parallel Agent tool calls — only when tasks modify different files and have no dependencies on each other
    - **File-based coordination**: If two `[P]` tasks touch the same file, execute them sequentially despite the parallel marker
@@ -137,7 +162,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    6. **Lessons learned**: If `.specify/memory/lessons-learned.md` exists, include entries tagged `[phase:implement]` or `[phase:all]`
    7. **Phase progress**: A brief list of files created/modified by prior tasks in the current phase (so the subagent knows what already exists)
 
-   **Subagent prompt template**:
+   **Subagent prompt template** (passed as the Agent tool's `prompt`, alongside the routed `subagent_type`):
    ```
    You are implementing a single task for a Rails application. Follow the constitution principles strictly.
 
@@ -185,8 +210,8 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 7. Implementation phase guide (what each phase typically involves):
    - **Setup (Phase 1, parent-executed)**: Initialize config initializers, routes, dependencies — execute these directly without subagents
-   - **Foundational (Phase 2, subagent-executed)**: Run migrations, create models, write model tests — each task gets a fresh subagent
-   - **User Stories (Phase 3+, subagent-executed)**: Implement services, controllers, views per user story — each task gets a fresh subagent with only that story's spec section
+   - **Foundational (Phase 2, subagent-executed)**: Run migrations, create models, write model specs — each task gets a fresh subagent routed to its specialist (`migration-agent`, `model-agent`, `rspec-agent`)
+   - **User Stories (Phase 3+, subagent-executed)**: Implement services, controllers, views per user story — each task gets a fresh subagent (routed to its specialist) with only that story's spec section
    - **Polish (Final phase, parent-executed)**: `bundle exec rubocop -a`, `bin/brakeman --no-pager`, `bundle exec rspec` — execute directly, no subagents needed
 
 8. Progress tracking and error handling (parent orchestrator responsibilities):

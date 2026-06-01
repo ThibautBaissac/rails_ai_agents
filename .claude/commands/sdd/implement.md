@@ -1,5 +1,5 @@
 ---
-description: Execute the implementation plan by processing and executing all tasks defined in tasks.md
+description: Execute the implementation plan inline (single context) by processing all tasks in tasks.md. Use /sdd:implement-subagents instead to delegate tasks to specialist agents in fresh contexts.
 ---
 
 ## User Input
@@ -120,14 +120,14 @@ You **MUST** consider the user input before proceeding (if not empty).
    - **Follow TDD approach**: Execute test tasks before their corresponding implementation tasks
    - **File-based coordination**: Tasks affecting the same files must run sequentially
    - **Validation checkpoints**: Verify each phase completion before proceeding
-   - **Post-phase verification**: After completing each phase, run `bin/rails test` to catch regressions early. If system tests exist for the phase, also run `bin/rails test:system`.
+   - **Post-phase verification**: After completing each phase, run `bundle exec rspec` to catch regressions early. If system specs exist for the phase, also run `bundle exec rspec spec/system/`.
 
 7. Implementation execution rules:
    - **Setup first**: Initialize config initializers, routes, dependencies
    - **Foundation**: Run migrations, create models, write model tests
    - **Core development**: Implement services, controllers, views per user story
-   - **Testing**: Write service tests, controller tests, system tests per story
-   - **Polish and validation**: `bin/rubocop`, `bin/brakeman --no-pager`, `bin/ci`
+   - **Testing**: Write service specs, controller/request specs, system specs per story (RED before each implementation task)
+   - **Polish and validation**: `bundle exec rubocop -a`, `bin/brakeman --no-pager`, `bundle exec rspec`
 
 8. Progress tracking and error handling:
    - Report progress after each completed task
